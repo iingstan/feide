@@ -1,0 +1,226 @@
+<h3>页面 Page</h3>
+
+<div class="pageblock">
+  <h5>页面列表(page) <a href="javascript:;" id="create_page_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建页面</a></h5>
+  <div id="pagelist"></div>
+</div>
+
+<script id="pagelist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover table-vam">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td><strong>\{{this.filename}}</strong></td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="/preview/\{{this.name}}" target="_blank" class="btn 
+          btn-primary btn-sm"><span class="fui-eye"></span> 预览</a>
+          <a href="#" class="btn 
+          btn-success btn-sm change_layout_btn" data-filename="\{{this.filename}}" data-path="\{{this.path}}"><span class="fui-document"></span> 母版页</a>
+          <a href="#" data-filename="\{{this.filename}}" data-path="\{{this.path}}" class="btn btn-info btn-sm page_data_btn"><span class="fui-list-columned"></span> 模板数据</a>
+          <a href="/codeview?path=\{{this.path}}" target="_blank" class="btn btn-success btn-sm"><span class="fui-document"></span> 源代码</a>
+          <a href="javascript:;" data-filepath="\{{this.path}}" class="btn btn-danger btn-sm delete_page_btn"><span class="fui-cross"></span> 删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_page_template" type="text/x-handlebars-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h6 class="modal-title">新建页面</h6>
+        </div>
+        <form action="" id="create_page_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="page_name">页面名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="page_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="page_layout">选择母版页 (Layout)</label>
+              <select name="" id="page_layout" class="form-control select select-primary" data-toggle="select">
+                \{{#each layouts}}
+                <option value="\{{name}}">\{{name}}</option>
+                \{{/each}}
+                <option value="">不使用母版页</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="control_check_div">
+                <label class="checkbox"><input type="checkbox" class="flat_checkbox" id="extra_js"> 创建与页面同名的JS</label>
+                <label class="checkbox"><input type="checkbox" class="flat_checkbox" id="extra_less"> 创建与页面同名的Less</label>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="page_layout_template" type="text/x-handlebars-template">
+  <div class="form-group">
+    <label class="control-label" for="page_layout">选择母版页 (Layout)</label>
+    <select name="" id="page_layout" class="form-control select select-primary" data-toggle="select">
+      \{{#each layouts}}
+      <option value="\{{name}}">\{{name}}</option>
+      \{{/each}}
+      <option value="">不使用母版页</option>
+    </select>
+  </div>
+</script>
+
+<script id="pagedata_template" type="text/x-handlebars-template">
+  <div class="form-group">
+    <label class="control-label" for="page_data">模板数据 <span class="required">*</span></label>
+    <textarea class="form-control code" id="page_data" type="text" required></textarea>
+  </div>
+</script>
+
+<div class="pageblock">
+  <h5>母版页列表(page/_layout) <a href="javascript:;" id="create_layout_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建母版页</a></h5>
+  <div id="layoutlist"></div>
+</div>
+
+<script id="layoutlist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover table-vam">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td><strong>\{{this.filename}}</strong></td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="#" data-filename="\{{this.filename}}" data-path="\{{this.path}}" class="btn btn-info btn-sm page_data_btn"><span class="fui-list-columned"></span> 模板数据</a>
+          <a href="/codeview?path=\{{this.path}}" target="_blank" class="btn btn-success btn-sm"><span class="fui-document"></span> 源代码</a>
+          <a href="javascript:;" data-filepath='\{{this.path}}' class="delete_layout_btn btn btn-danger btn-sm"><span class="fui-cross"></span> 删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_layout_template" type="text/x-modal-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h6 class="modal-title">新建母版页</h6>
+        </div>
+        <form action="" id="create_layout_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="layout_name">母版页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="layout_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="pageblock">
+  <h5>局部页列表(page/_partial) <a href="javascript:;" id="create_partial_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建局部页</a></h5>
+  <div id="partiallist"></div>
+</div>
+
+<script id="partiallist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover table-vam">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td><strong>\{{this.filename}}</strong></td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="#" data-filename="\{{this.filename}}" data-path="\{{this.path}}" class="btn btn-info btn-sm page_data_btn"><span class="fui-list-columned"></span> 模板数据</a>
+          <a href="/codeview?path=\{{this.path}}" target="_blank" class="btn btn-success btn-sm"><span class="fui-document"></span> 源代码</a>
+          <a href="javascript:;" data-filepath='\{{this.path}}' class="delete_partial_btn btn btn-danger btn-sm"><span class="fui-cross"></span> 删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_partial_template" type="text/x-modal-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">新建局部页</h4>
+        </div>
+        <form action="" id="create_partial_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="partial_name">局部页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="partial_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+{{#extend "bodybottom"}}
+<script src="/js/page_page.js"></script>
+{{/extend}}

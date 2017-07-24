@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>初始化项目</title>
+      <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/flat-ui.css">
+    <link rel="stylesheet" href="/css/init.css">
+</head>
+<body>
+<div class="initbox" id="initbox">
+  <h4>初始化项目</h4>
+  <div>{{workdir}}</div>
+  <form action="" id="init_form">
+  <div class="form-group">
+    <label class="control-label" for="project_name">项目名称</label>
+    <input class="form-control" id="project_name" type="text" required>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="server_port">集成开发工具端口号 <span class="tips">(更改此项需要重启开发工具)</span></label>
+    <input class="form-control" id="server_port" type="number" max="65536" min="1000" required>
+  </div>
+  <div class="form-group">
+    <label class="control-label">初始化文件</label>
+    <label class="radio">
+      <input type="radio" name="new_file" id="new_file1" value="0" checked data-toggle="radio">
+      只新建配置文件
+    </label>
+    <label class="radio">
+      <input type="radio" name="new_file" id="new_file2" value="1" data-toggle="radio">
+      新建配置文件和工作文件夹
+    </label>
+    <label class="radio">
+      <input type="radio" name="new_file" id="new_file3" value="2" data-toggle="radio">
+      创建一个简单的示例项目
+    </label>
+    
+  </div>  
+  <div class="form-group">
+    <input type="submit" id="init_submit_btn" value="确定" class="btn btn-primary btn-lg">
+  </div>
+  </form>
+</div>
+</body>
+</html>
+<script src="/js/jquery.js"></script>
+<script src="/js/flat-ui.js"></script> 
+<script src="/js/init.js"></script>

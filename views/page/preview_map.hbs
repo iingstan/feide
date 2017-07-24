@@ -1,0 +1,20 @@
+{{#extend "head"}}
+<link rel="stylesheet" href="/css/jsmind.css">
+<style type="text/css">
+        #jsmind_container{
+            width:850px;
+            height:600px;
+            border:solid 1px #ccc;
+            /*background:#f4f4f4;*/
+            background:#f4f4f4;
+        }
+    </style>
+{{/extend}}
+
+<h3>{{title}}</h3>
+<div id="jsmind_container"></div>
+
+{{#extend "bodybottom"}}
+<script src="/js/jsmind.js"></script>
+<script src="/js/preview_map.js"></script>
+{{/extend}}

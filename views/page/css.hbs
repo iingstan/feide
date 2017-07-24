@@ -1,0 +1,100 @@
+<h3>CSS文件</h3>
+
+
+<div class="pageblock">
+  <h5>CSS列表(css) <a href="#" id="create_css_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建CSS</a></h5>
+  <div id="csslist"></div>
+</div>
+
+
+<script id="csslist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover table-vam">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td><strong>\{{this.filename}}</strong></td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="/preview/css/\{{this.name}}.css" target="_blank" class="btn 
+          btn-primary btn-sm"><span class="fui-eye"></span> 预览</a>
+          <a href="/codeview?path=\{{this.path}}" target="_blank" class="btn btn-success btn-sm"><span class="fui-document"></span> 源代码</a>
+          <a href="javascript:;" data-filepath="\{{this.path}}" class="btn btn-danger btn-sm delete_css_btn"><span class="fui-cross"></span> 删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_css_template" type="text/x-handlebars-template">
+  <div class="form-group">
+    <label class="control-label" for="css_name">CSS文件名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+    <input class="form-control" id="css_name" type="text" pattern="[A-z0-9_]+" required>
+  </div>
+</script>
+
+
+<div class="pageblock">
+  <h5>局部CSS列表(css/_partial) <a href="#" id="create_partial_css_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建局部CSS</a></h5>
+  <div id="partial_csslist"></div>
+</div>
+
+
+<script id="partial_csslist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover table-vam">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td><strong>\{{this.filename}}</strong>
+           \{{#if this.is_system_file}}
+            <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="系统自动生成的Less文件，在其他Less文件引用后即可生效"></span>
+           \{{/if}}
+         </td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="/codeview?path=\{{this.path}}" target="_blank" class="btn btn-success btn-sm"><span class="fui-document"></span> 源代码</a>
+          \{{#if this.is_system_file}}
+          \{{else}}
+          <a href="javascript:;" data-filepath="\{{this.path}}" class="btn btn-danger btn-sm delete_css_partial_btn"><span class="fui-cross"></span> 删除</a>
+          \{{/if}}    
+                
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_partial_css_template" type="text/x-handlebars-template">
+  <div class="form-group">
+    <label class="control-label" for="partial_css_name">CSS文件名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+    <input class="form-control" id="partial_css_name" type="text" pattern="[A-z0-9_]+" required>
+  </div>
+</script>
+
+
+{{#extend "bodybottom"}}
+<script src="/js/page_css.js"></script>
+{{/extend}}

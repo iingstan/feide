@@ -1,0 +1,45 @@
+<h3>{{title}}</h3>
+
+<div class="managelist">
+    <form action="" id="mody_config_form">
+    <h6>项目配置</h6>
+
+    <div class="form-group">
+        <label class="control-label" for="project_name">项目名称</label>
+        <input class="form-control" id="project_name" type="text">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="manage_server_port">管理系统端口号 <span class="required">*</span> <span class="glyphicon glyphicon-question-sign"  data-toggle="tooltip" data-placement="right" data-original-title="就是你现在看到的这个网站的端口号"></span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="更改此项需重启管理系统服务"></span></label>
+        <input class="form-control" required  id="manage_server_port" type="number" max="65535" min="1">
+    </div>
+
+    <h6>CSS压缩配置</h6>
+
+    <div class="form-group">
+        <label class="control-label" for="css_compress_ie">IE兼容性 </label>
+        <select id="css_compress_ie" class="form-control">
+            <option value="*">Internet Explorer 10+</option>
+            <option value="ie9">Internet Explorer 9+</option>
+            <option value="ie8">Internet Explorer 8+</option>
+            <option value="ie7" selected>Internet Explorer 7+</option>
+        </select>
+    </div>
+
+    <h6>JS编译配置</h6>
+
+    <div class="form-group">
+        <label class="control-label"><input type="checkbox" class="bigcheck" name="" id="js_babel"> 使用Babel </label>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">提交</button> &nbsp; 
+        <button type="reset" class="btn btn-default">重置</button>
+    </div>
+    </form>
+</div>
+
+
+{{#extend "bodybottom"}}
+<script src="/js/config.js"></script>
+{{/extend}}

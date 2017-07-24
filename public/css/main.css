@@ -1,0 +1,116 @@
+body {
+  font-size: 16px;
+}
+
+h1,h2,h3,h4,h5,h6{
+  word-break: break-all;
+}
+
+pre {
+  line-height: 1.5;
+  background-color: #E4E4E4;
+}
+
+pre code {
+  font-size: 14px;
+}
+
+.managelist {
+  margin-top: 20px;
+  width: 50%;
+}
+
+.required {
+  color: red;
+}
+
+.control_check_div {
+  display: block;
+  font-weight: normal;
+}
+
+.control_check_div label {
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.pageblock {
+  position: relative;
+}
+
+.page_fun {
+  /*position: absolute;
+    right: 10px;
+    top: 0px;*/
+}
+
+.pageblock h3 {
+  margin-top: 20px;
+}
+
+.tab-switch-upload .form-group {
+  padding-top: 20px;
+}
+
+.form_alert_div {
+  display: none;
+}
+
+#sprites_list img {
+  display: block;
+  margin: 0 auto;
+}
+
+#sprites_list .col-md-2 {
+  text-align: center;
+}
+
+#sprites_list .code {
+  font-family: consolas;
+  font-size: 12px;
+}
+
+.navbar {
+  margin-bottom: 0;
+}
+
+.navbar-brand {
+  padding: 4px 40px 4px 10px;
+}
+
+.navbar-brand img {
+  height: 50px;
+  display: inline-block;
+}
+
+.navbar-collapse .navbar-nav.navbar-left:first-child>li:first-child a {
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.navbar-collapse .navbar-nav.navbar-left:first-child .dropdown-menu>li a {
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.btn-sm,
+.btn-group-sm>.btn {
+  padding: 6px 9px;
+}
+
+
+.table-vam > thead > tr > th, .table-vam > tbody > tr > th, .table-vam > tfoot > tr > th, .table-vam > thead > tr > td, .table-vam > tbody > tr > td, .table-vam > tfoot > tr > td {
+    vertical-align: middle;
+}
+
+textarea.code{
+  font-family: consolas;
+  font-size: 14px;
+  height: 200px;
+}
+
+.bigcheck{
+  width: 20px;
+  height: 20px;
+  vertical-align: -4px;
+}

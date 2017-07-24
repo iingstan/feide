@@ -1,0 +1,38 @@
+<h1>组件(components)</h1>
+
+<div class="pageblock">
+  <h3>组件列表</h3>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_page_btn" class="btn btn-primary btn-sm">新建组件</a>
+    <a href="javascript:;" id="" class="btn btn-primary btn-sm">浏览组件库</a>
+  </div>
+  <div id="components_list"></div>
+</div>
+
+<script id="components_list_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>组件名</th>
+        <th>组件说明</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td></td>
+        <td>
+          <a href="javascript:;" data-filetype="layout" data-filename="\{{this.filename}}" class="viewfile_btn btn btn-success btn-xs">查看文件</a>
+          <a href="javascript:;" data-layoutname='\{{this.filename}}' class="delete_layout_btn btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+{{#extend "bodybottom"}}
+<script src="/js/components.js"></script>
+{{/extend}}

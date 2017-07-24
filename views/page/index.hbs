@@ -1,0 +1,344 @@
+<h3>{{title}}</h3>
+
+{{!--
+<h3>快捷功能</h3>--}}
+
+<a href="vscode://E:\Project\qgqp_collect\collect_caifuhao.debug.js">click</a>
+
+<div class="pageblock">
+  <h5>页面列表(page)</h5>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_page_btn" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> 新建页面</a>
+    &nbsp;
+    预览页面自动刷新 <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="当文件改变时，预览页面自动刷新。使用Websocket技术，只支持IE10及以上浏览器，低版本浏览器会报错。"></span>：<input type="checkbox" data-toggle="switch" name="info-square-switch" data-on-color="info" id="switch-04" />
+  </div>
+  <div id="pagelist"></div>
+</div>
+
+<div class="pageblock">
+  <h3>母版页列表(layout)</h3>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_layout_btn" class="btn btn-primary btn-sm">新建母版页</a>
+  </div>
+  <div id="layoutlist"></div>
+</div>
+
+<script id="layoutlist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="javascript:;" data-filetype="layout" data-filename="\{{this.filename}}" class="viewfile_btn btn btn-success btn-xs">查看文件</a>
+          <a href="javascript:;" data-layoutname='\{{this.filename}}' class="delete_layout_btn btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_layout_template" type="text/x-modal-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">新建母版页</h4>
+        </div>
+        <form action="" id="create_layout_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="layout_name">母版页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="layout_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div class="pageblock">
+  <h3>局部页列表(partials)</h3>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_partial_btn" class="btn btn-primary btn-sm">新建局部页</a>
+  </div>
+  <div id="partiallist"></div>
+</div>
+
+<script id="partiallist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="javascript:;" data-filetype="partials" data-filename="\{{this.filename}}" class="viewfile_btn btn btn-success btn-xs">查看文件</a>
+          <a href="javascript:;" data-partialname='\{{this.filename}}' class="delete_partial_btn btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="create_partial_template" type="text/x-modal-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">新建局部页</h4>
+        </div>
+        <form action="" id="create_partial_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="partial_name">局部页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="partial_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
+<div class="pageblock">
+  <h3>通用文件(common)</h3>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_common" class="btn btn-primary btn-sm">新建通用文件</a>
+  </div>
+  <div id="common_list"></div>
+
+
+</div>
+
+<div class="pageblock">
+  <h3>公共库文件(libs)</h3>
+  <div class="page_fun">
+    <a href="javascript:;" id="create_libs_btn" class="btn btn-primary btn-sm">新建公共库文件</a>
+  </div>
+  <div id="libs_list"></div>
+
+</div>
+
+<script id="create_libs_template" type="text/x-handlebars-template">
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">新建公共库文件</h4>
+      </div>
+      <form action="" id="create_libs_form" encType="multipart/form-data">
+      <div class="modal-body">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#home" data-toggle="tab" aria-expanded="true">从本地上传</a></li>
+          <li class=""><a href="#profile" data-toggle="tab" aria-expanded="false">从网上下载</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content tab-switch-upload">
+          <div class="tab-pane fade active in" id="home">
+            <div class="form-group">
+              <input class="form-control" id="create_libs_uploadfile" type="file" placeholder="选择文件">
+            </div>
+          </div>
+          <div class="tab-pane fade" id="profile">
+            <div class="form-group">
+              <input class="form-control" id="create_libs_uploadurl" type="text" placeholder="输入文件网址">
+            </div>
+            <div>
+              可以从各个前端资源CDN网站复制路径，例如 <a href="https://cdnjs.com/" target="_blank">CDNJS</a>,  <a href="http://cdn.code.baidu.com/" target="_blank">百度CDN</a>
+            </div>
+          </div>
+        </div>
+        <div id="error_message"></div>
+        {{!--<div class="alert alert-dismissible alert-warning form_alert_div" id="form_alert_div">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <p>请选择一种上传文件的方式！</p>
+        </div>--}}
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary submitbtn">确定</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+</script>
+
+
+<script id="create_page_template" type="text/x-handlebars-template">
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">新建页面</h4>
+        </div>
+        <form action="" id="create_page_form">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label class="control-label" for="page_name">页面名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <input class="form-control" id="page_name" type="text" pattern="[A-z0-9_]+" required>
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="page_layout">选择母版页 (Layout)</label>
+              <select name="" id="page_layout" class="form-control select select-primary" data-toggle="select">
+                \{{#each this}}
+                <option value="\{{this}}">\{{this}}</option>
+                \{{/each}}
+                <option value="">不使用母版页</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">新建和页面一起的额外内容</label>
+              <div class="control_check_div">
+                <label><input type="checkbox" id="extra_js"> JS</label>
+                <label><input type="checkbox" id="extra_less"> Less</label>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary submitbtn">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="pagelist_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>有JS</th>
+        <th>有Less</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td>\{{#if this.has_js}}<span class="glyphicon glyphicon-ok"></span>\{{/if}}
+        </td>
+        <td>\{{#if this.has_less}}<span class="glyphicon glyphicon-ok"></span>\{{/if}}</td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>
+          <a href="/preview/\{{this.filename}}" target="_blank" class="btn btn-success btn-xs">预览</a>
+          <a href="javascript:;" data-pagename="\{{this.filename}}" class="btn btn-danger btn-xs delete_page_btn"><span class="glyphicon glyphicon-remove"></span>删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="common_list_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="javascript:;" data-filetype="common" data-filename="\{{this.filename}}" class="viewfile_btn btn btn-success btn-xs">查看文件</a>
+          <a href="javascript:;" data-commonname='\{{this.filename}}' class="delete_common_btn btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+<script id="libs_list_template" type="text/x-handlebars-template">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>创建时间</th>
+        <th>修改时间</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      \{{#each this}}
+      <tr>
+        <td>\{{this.filename}}</td>
+        <td>\{{showTime this.ctime}}</td>
+        <td>\{{showTime this.mtime}}</td>
+        <td>\{{showFileSize this.size}}</td>
+        <td>
+          <a href="javascript:;" data-filetype="libs" data-filename="\{{this.filename}}" class="viewfile_btn btn btn-success btn-xs">查看文件</a>
+          <a href="javascript:;" data-libsname='\{{this.filename}}' class="delete_libs_btn btn btn-danger btn-xs">删除</a>
+        </td>
+      </tr>
+      \{{/each}}
+    </tbody>
+  </table>
+</script>
+
+{{#extend "bodybottom"}}
+<script src="/js/page.js"></script>
+{{/extend}}

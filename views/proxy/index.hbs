@@ -1,0 +1,63 @@
+<h3>{{title}}</h3>
+
+<form action="" id="open_proxy_form" class="form-horizontal">
+  <div class="form-group">
+    <div class="col-lg-4">
+      <label class="control-label" for="portnum">代理服务端口号</label>
+      <input class="form-control" id="portnum" required  type="number" max="65536" min="1" placeholder="代理服务端口号">
+    </div>
+  </div>
+  
+  <h5>代理规则</h5>
+  <h6>规则越上面的优先级越高</h6>
+  <div>路由配置更详细说明， <a href="https://github.com/chimurai/http-proxy-middleware#context-matching" target="_blank">请参考链接</a></div>
+
+  <div id="proxy_rules">
+    
+  </div>
+
+
+  <div class="form-group">
+    <div class="col-lg-12">
+      <button type="button" id="add_proxy_rule" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 新建规则</button>
+    </div>  
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-12">
+      <button type="submit" id="open_proxy" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> 开启代理服务器</button>
+      <button type="button" id="close_proxy" class="btn btn-primary" disabled><span class="glyphicon glyphicon-eye-close"></span> 关闭代理服务器</button>
+      <button type="button" id="save_proxy" class="btn btn-info"><span class="glyphicon glyphicon-floppy-disk"></span> 保存配置</button>
+      <span id="save_proxy_tips" style="display:none;">保存成功！</span>
+    </div>  
+  </div>  
+</form>
+
+{{!--<a href="javascript:;" class="btn btn-primary" id="open">开启</a>
+<a href="javascript:;" class="btn btn-primary" id="close" disabled>关闭</a>
+<a href="javascript:;" class="btn btn-primary" id="state">状态</a>--}}
+
+<script id="create_proxy_rule_template" type="text/x-modal-template">
+<div class="form-group proxy_rules_item">
+  <div class="col-lg-4">
+    <label class="control-label">路由</label>
+    <input class="form-control porxy_route" required type="text" placeholder="路由">
+  </div>
+  <div class="col-lg-6">
+    <label class="control-label">代理网址</label>
+    <input class="form-control porxy_url" required type="url" placeholder="代理网址">
+  </div>
+  <div class="col-lg-2">
+    <label class="control-label">&nbsp;</label>
+    <div>
+      <button type="button" class="btn btn-default rule_moveup" title="上移"><span class="glyphicon glyphicon-arrow-up"></span></button>
+      <button type="button" class="btn btn-default rule_movedown" title="下移"><span class="glyphicon glyphicon-arrow-down"></span></button>
+      <button type="button" class="btn btn-default delete_rule" title="删除"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+  </div>
+</div>
+</script>
+
+{{#extend "bodybottom"}}
+<script src="/js/proxy.js"></script>
+{{/extend}}

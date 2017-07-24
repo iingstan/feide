@@ -1,0 +1,20 @@
+body{
+  background-color: #1ABC9C;
+}
+
+.initbox{
+  width: 400px;
+  background-color: #EDEFF1;
+  margin: 100px auto 0 auto;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.tips{
+  font-size: 90%;
+  color: #aaa;
+}
+
+#init_submit_btn{
+  width: 100%;
+}

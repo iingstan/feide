@@ -1,0 +1,120 @@
+<h3>{{title}}</h3>
+
+<h5>发布配置(feauto.config.json - publish) <a href="javascript:;" id="create_publish_btn" class="btn btn-inverse btn-sm"><span class="fui-plus"></span> 新建发布配置</a></h5>
+
+
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>配置名称</th>
+      <th>发布路径</th>
+      <th>发布选项</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+      {{#each config.publish}}
+    <tr>
+      <td>{{publish_name}}</td>
+      <td>{{publish_folder}}</td>
+      <td>
+          <input type="checkbox" {{#if publish_page}}checked{{/if}} disabled > 发布页面<br>
+          <input type="checkbox" {{#if publish_datefolder}}checked{{/if}} disabled > 新建日期文件夹<br>
+          <input type="checkbox" {{#if publish_delete_file}}checked{{/if}} disabled > 删除已存在的文件<br>
+          <input type="checkbox" {{#if publish_compress}}checked{{/if}} disabled > 压缩JS,CSS
+      </td>
+      <td>
+          <a href="javascript:;" data-index="{{@index}}" class="publish_publish_btn btn btn-warning btn-sm"><span class="fui-exit"></span> 立刻发布</a>
+          <a href="javascript:;" data-index="{{@index}}" class="edit_publish_btn btn btn-info btn-sm"><span class="fui-new"></span> 修改配置</a>
+          <a href="javascript:;" data-index="{{@index}}" class="delete_publish_btn btn btn-danger btn-sm"><span class="fui-cross"></span> 删除配置</a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table> 
+
+
+
+<script id="create_publish_template" type="text/x-handlebars-template">
+    <div class="modal fade" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">新建发布配置</h4>
+                </div>
+                <form action="" id="create_publish_form">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="control-label" for="publish_name">配置名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用中英文数字和下划线做文件名"></span></label>
+                            <input class="form-control" id="publish_name" type="text" pattern="[A-z0-9_\u4e00-\u9fa5]+" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="publish_folder">发布目标文件夹 <span class="required">*</span></label>
+                            <input class="form-control" id="publish_folder" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">配置选项</label>
+                            <div class="control_check_div">
+                                <label><input type="checkbox" id="publish_page"> 发布页面</label><br>
+                                <label><input type="checkbox" id="publish_datefolder"> 新建日期文件夹 (例如： \20170428)</label><br>
+                                <label><input type="checkbox" id="publish_delete_file"> 删除已存在的文件</label><br>
+                                <label><input type="checkbox" id="publish_compress"> 压缩JS,CSS</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary submitbtn">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="edit_publish_template" type="text/x-handlebars-template">
+    <div class="modal fade" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">修改发布配置</h4>
+                </div>
+                <form action="" id="edit_publish_form">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="control-label" for="publish_name">配置名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用中英文数字和下划线做文件名"></span></label>
+                            <input class="form-control" id="publish_name" type="text" pattern="[A-z0-9_\u4e00-\u9fa5]+" required value="\{{publish_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="publish_folder">发布目标文件夹 <span class="required">*</span></label>
+                            <input class="form-control" id="publish_folder" type="text" required value="\{{publish_folder}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">配置选项</label>
+                            <div class="control_check_div">
+                                <label><input type="checkbox" \{{#if publish_page}}checked\{{/if}} id="publish_page"> 发布页面</label><br>
+                                <label><input type="checkbox" \{{#if publish_datefolder}}checked\{{/if}}  id="publish_datefolder"> 新建日期文件夹 (例如： \20170428)</label><br>
+                                <label><input type="checkbox" \{{#if publish_delete_file}}checked\{{/if}}  id="publish_delete_file"> 删除已存在的文件</label><br>
+                                <label><input type="checkbox" \{{#if publish_compress}}checked\{{/if}}  id="publish_compress"> 压缩JS,CSS</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary submitbtn">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+{{#extend "bodybottom"}}
+<script src="/js/publish.js"></script>
+{{/extend}}
