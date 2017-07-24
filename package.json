@@ -1,6 +1,6 @@
 {
   "name": "feide",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "前端集成开发环境",
   "main": "feide.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "css-loader": "^0.28.4",
     "delete": "^1.0.1",
     "express": "^4.15.2",
+    "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.1",
     "fs-exists-sync": "^0.1.0",
     "glob": "^7.1.2",
@@ -62,9 +63,5 @@
     "uglify-js": "^3.0.23",
     "webpack": "^2.4.1",
     "webpack-dev-middleware": "^1.10.1"
-  },
-  "devDependencies": {
-    "extract-text-webpack-plugin": "^2.1.2",
-    "webpack": "^2.4.1"
   }
 }
