@@ -1,17 +1,25 @@
 {
   "name": "feide",
   "version": "1.0.0",
-  "description": "",
+  "description": "前端集成开发环境",
   "main": "feide.js",
   "scripts": {
     "webpack": ".\\node_modules\\.bin\\webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["front-end",
+    "development",
+    "tool",
+    "server",
+    "http"],
   "author": "yijun",
   "license": "MIT",
   "bin": {
-    "feauto": "./feide.js"
+    "feide": "./feide.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iingstan/feide.git"
   },
   "dependencies": {
     "awesome-typescript-loader": "^3.2.1",
