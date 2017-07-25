@@ -41,4 +41,9 @@ file_watch.watch_webpackjs.start()
 // })
 
 //初始化项目
-manage_server(global.config.manage_server_port);
+manage_server(global.config.manage_server_port).then(()=>{
+  let opn = require('opn');
+  opn('http://localhost:' + global.config.manage_server_port + '/', {
+    app: 'chrome'
+  });
+})

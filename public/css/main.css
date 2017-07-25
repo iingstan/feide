@@ -76,6 +76,8 @@ pre code {
 
 .navbar-brand {
   padding: 4px 40px 4px 10px;
+  font-weight: normal;
+  font-size: 22px;
 }
 
 .navbar-brand img {
@@ -113,4 +115,8 @@ textarea.code{
   width: 20px;
   height: 20px;
   vertical-align: -4px;
+}
+
+.navbar-nav > li > a {
+  font-weight: normal;
 }

@@ -63,11 +63,12 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports) {
 
 /**
@@ -111,7 +112,8 @@ module.exports = function(options){
 };
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, exports) {
 
 /**
@@ -154,33 +156,8 @@ module.exports = function(options){
 };
 
 /***/ }),
-/* 2 */,
-/* 3 */,
-/* 4 */
-/***/ (function(module, exports) {
 
-/**
- * error_message
- */
-
-
-module.exports = function(ele, message, color){
-  var dcolor = "warning";
-  if(color){
-    dcolor = color;
-  }
-  if(ele.html() == ""){
-    ele.html('<div class="alert alert-dismissible alert-' + dcolor + '"><button type="button" class="close" data-dismiss="alert">&times;</button><p>' + message + '</p></div>');
-  }
-}
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
+/***/ 12:
 /***/ (function(module, exports, __webpack_require__) {
 
 var modal_alert = __webpack_require__(0);
@@ -866,5 +843,26 @@ $('body').on('click', '.viewfile_btn', function () {
   return false;
 });
 
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports) {
+
+/**
+ * error_message
+ */
+
+
+module.exports = function(ele, message, color){
+  var dcolor = "warning";
+  if(color){
+    dcolor = color;
+  }
+  if(ele.html() == ""){
+    ele.html('<div class="alert alert-dismissible alert-' + dcolor + '"><button type="button" class="close" data-dismiss="alert">&times;</button><p>' + message + '</p></div>');
+  }
+}
+
 /***/ })
-/******/ ]);
+
+/******/ });

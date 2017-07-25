@@ -63,11 +63,12 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports) {
 
 /**
@@ -111,7 +112,8 @@ module.exports = function(options){
 };
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, exports) {
 
 /**
@@ -154,120 +156,8 @@ module.exports = function(options){
 };
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
 
-/**
- * 删除文件提示框
- */
-
-var modal_confirm = __webpack_require__(1);
-var modal_alert = __webpack_require__(0)
-
-function delete_file(filepath, success, fail) {
-  $.ajax({
-      url: '/api/delete_file',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        filepath: filepath
-      }
-  })
-  .done(function (json) {
-    if (json.re) {
-      if (success) {
-        success();
-      }
-    } else {
-      if (fail) {
-        fail(json.message);
-      }
-    }
-  })
-  .fail(function (error) {
-    if (fail) {
-      fail(error.message);
-    }
-  });
-}
-
-module.exports = {
-  bind: function(btn, callback){
-    $('body').on('click', btn, function(){
-      var filepath = $(this).data('filepath')
-      modal_confirm({
-        content:'确定删除 <strong>' + filepath + '</strong>？',
-        onConfirm: function(){
-          delete_file(filepath, function(){
-            callback();
-          }, function(message){
-            modal_alert(message);
-          });
-        }
-      });
-      return false;
-    })
-  }
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-/**
- * 模态框 表单
- */
-
-function modal_form(options) {
-    this.options = $.extend({
-        title: '提示',
-        formid: '',
-        content: '',
-        onClose: null
-    }, options);
-}
-
-modal_form.prototype.show = function () {
-    var html = this.html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><form action="" id="' + this.options.formid + '"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default form_cancel_btn"><span class="fui-cross"></span> 取消</button><button type="submit" class="btn btn-primary form_submit_btn"><span class="fui-check"></span> 确定</button></div></form></div></div></div>');
-    $('.modal-body', html).append(this.options.content);
-    $("body").append(html);
-    html.modal('show');
-
-    // html.on('click', '.form_submit_btn', function(){
-    //     html.modal('hide');
-    // });
-
-    html.on('click', '.form_cancel_btn', function(){
-        html.modal('hide');
-    });    
-
-    html.on('hidden.bs.modal', function (e) {
-        html.remove();
-        if(this.options.onClose){
-            this.options.onClose();
-        }
-    }.bind(this));
-};
-
-modal_form.prototype.close = function(){
-  this.html.modal('hide');
-}
-
-
-module.exports = modal_form
-
-/***/ }),
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -774,5 +664,111 @@ delete_file_confirm.bind('.delete_partial_btn', function(){
   get_partial();
 })
 
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 删除文件提示框
+ */
+
+var modal_confirm = __webpack_require__(1);
+var modal_alert = __webpack_require__(0)
+
+function delete_file(filepath, success, fail) {
+  $.ajax({
+      url: '/api/delete_file',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        filepath: filepath
+      }
+  })
+  .done(function (json) {
+    if (json.re) {
+      if (success) {
+        success();
+      }
+    } else {
+      if (fail) {
+        fail(json.message);
+      }
+    }
+  })
+  .fail(function (error) {
+    if (fail) {
+      fail(error.message);
+    }
+  });
+}
+
+module.exports = {
+  bind: function(btn, callback){
+    $('body').on('click', btn, function(){
+      var filepath = $(this).data('filepath')
+      modal_confirm({
+        content:'确定删除 <strong>' + filepath + '</strong>？',
+        onConfirm: function(){
+          delete_file(filepath, function(){
+            callback();
+          }, function(message){
+            modal_alert(message);
+          });
+        }
+      });
+      return false;
+    })
+  }
+}
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+/**
+ * 模态框 表单
+ */
+
+function modal_form(options) {
+    this.options = $.extend({
+        title: '提示',
+        formid: '',
+        content: '',
+        onClose: null
+    }, options);
+}
+
+modal_form.prototype.show = function () {
+    var html = this.html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><form action="" id="' + this.options.formid + '"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default form_cancel_btn"><span class="fui-cross"></span> 取消</button><button type="submit" class="btn btn-primary form_submit_btn"><span class="fui-check"></span> 确定</button></div></form></div></div></div>');
+    $('.modal-body', html).append(this.options.content);
+    $("body").append(html);
+    html.modal('show');
+
+    // html.on('click', '.form_submit_btn', function(){
+    //     html.modal('hide');
+    // });
+
+    html.on('click', '.form_cancel_btn', function(){
+        html.modal('hide');
+    });    
+
+    html.on('hidden.bs.modal', function (e) {
+        html.remove();
+        if(this.options.onClose){
+            this.options.onClose();
+        }
+    }.bind(this));
+};
+
+modal_form.prototype.close = function(){
+  this.html.modal('hide');
+}
+
+
+module.exports = modal_form
+
 /***/ })
-/******/ ]);
+
+/******/ });

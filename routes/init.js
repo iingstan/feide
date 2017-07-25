@@ -22,7 +22,7 @@ router.post('/init_project', function(req, res, next) {
   });
 
   if(new_file > 0){
-    ["css","js","libs","page","css/_partial","css/_sprite","js/modules","page/_layout", "page/_partial"].forEach(v=>{
+    ["css","js","libs","page", "public","css/_partial","css/_sprite","js/modules","page/_layout", "page/_partial"].forEach(v=>{
       files.createDirectory(path.join(global.workdir, v, path.delimiter))
     })
   }
