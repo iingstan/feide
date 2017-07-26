@@ -20,7 +20,7 @@
       <td>
           <input type="checkbox" {{#if publish_page}}checked{{/if}} disabled > 发布页面<br>
           <input type="checkbox" {{#if publish_datefolder}}checked{{/if}} disabled > 新建日期文件夹<br>
-          <input type="checkbox" {{#if publish_delete_file}}checked{{/if}} disabled > 删除已存在的文件<br>
+          {{!-- <input type="checkbox" {{#if publish_delete_file}}checked{{/if}} disabled > 删除已存在的文件<br> --}}
           <input type="checkbox" {{#if publish_compress}}checked{{/if}} disabled > 压缩JS,CSS
       </td>
       <td>
@@ -59,7 +59,7 @@
                             <div class="control_check_div">
                                 <label><input type="checkbox" id="publish_page"> 发布页面</label><br>
                                 <label><input type="checkbox" id="publish_datefolder"> 新建日期文件夹 (例如： \20170428)</label><br>
-                                <label><input type="checkbox" id="publish_delete_file"> 删除已存在的文件</label><br>
+                                {{!-- <label><input type="checkbox" id="publish_delete_file"> 删除已存在的文件</label><br> --}}
                                 <label><input type="checkbox" id="publish_compress"> 压缩JS,CSS</label>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             <div class="control_check_div">
                                 <label><input type="checkbox" \{{#if publish_page}}checked\{{/if}} id="publish_page"> 发布页面</label><br>
                                 <label><input type="checkbox" \{{#if publish_datefolder}}checked\{{/if}}  id="publish_datefolder"> 新建日期文件夹 (例如： \20170428)</label><br>
-                                <label><input type="checkbox" \{{#if publish_delete_file}}checked\{{/if}}  id="publish_delete_file"> 删除已存在的文件</label><br>
+                                {{!-- <label><input type="checkbox" \{{#if publish_delete_file}}checked\{{/if}}  id="publish_delete_file"> 删除已存在的文件</label><br> --}}
                                 <label><input type="checkbox" \{{#if publish_compress}}checked\{{/if}}  id="publish_compress"> 压缩JS,CSS</label>
                             </div>
                         </div>

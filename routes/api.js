@@ -189,7 +189,7 @@ router.post('/create_publish', function (req, res, next) {
   var publish_folder = req.body.publish_folder;
   var publish_page = req.body.publish_page === "true" ? true : false;
   var publish_datefolder = req.body.publish_datefolder === "true" ? true : false;
-  var publish_delete_file = req.body.publish_delete_file === "true" ? true : false;
+  //var publish_delete_file = req.body.publish_delete_file === "true" ? true : false;
   var publish_compress = req.body.publish_compress === "true" ? true : false;  
 
   if(global.config.publish == undefined){
@@ -201,7 +201,7 @@ router.post('/create_publish', function (req, res, next) {
     publish_folder: publish_folder,
     publish_page: publish_page,
     publish_datefolder: publish_datefolder,
-    publish_delete_file: publish_delete_file,
+    //publish_delete_file: publish_delete_file,
     publish_compress: publish_compress
   });
 
@@ -223,7 +223,7 @@ router.post('/edit_publish', function (req, res, next) {
   var publish_folder = req.body.publish_folder;
   var publish_page = req.body.publish_page === "true" ? true : false;
   var publish_datefolder = req.body.publish_datefolder === "true" ? true : false;
-  var publish_delete_file = req.body.publish_delete_file === "true" ? true : false;
+  //var publish_delete_file = req.body.publish_delete_file === "true" ? true : false;
   var publish_compress = req.body.publish_compress === "true" ? true : false;  
 
   global.config.publish.splice(index, 1, {
@@ -231,7 +231,7 @@ router.post('/edit_publish', function (req, res, next) {
     publish_folder: publish_folder,
     publish_page: publish_page,
     publish_datefolder: publish_datefolder,
-    publish_delete_file: publish_delete_file,
+    //publish_delete_file: publish_delete_file,
     publish_compress: publish_compress
   });
 
