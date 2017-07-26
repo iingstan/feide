@@ -1,3 +1,6 @@
+/**
+ * style_compress
+ */
 var modal_alert = require('./modules/modal_alert/modal_alert');
 
 $('#header_nav>li:eq(3)').addClass('active');
@@ -22,22 +25,23 @@ function get_config(callback) {
 }
 
 get_config(function(config){
-  $('#project_name').val(config.project_name);
-  $('#manage_server_port').val(config.manage_server_port);
+  if(config.css_compress){
+    if(config.css_compress.css_compress_ie){
+      $('#css_compress_ie').val(config.css_compress.css_compress_ie);
+    }
+  }
   
 });
 
 $('#mody_config_form').on('submit', function () {
-  var project_name = $.trim($('#project_name').val());
-  var manage_server_port = $.trim($('#manage_server_port').val());
+  var css_compress_ie = $('#css_compress_ie').val();
 
   $.ajax({
     url: '/api/mody_config',
     type: 'POST',
     dataType: 'json',
     data: {
-      project_name: project_name,
-      manage_server_port: manage_server_port
+      css_compress_ie: css_compress_ie
     }
   })
     .done(function (json) {

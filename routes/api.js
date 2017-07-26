@@ -27,26 +27,28 @@ var jsonresult = {
 /* 修改配置 */
 router.post('/mody_config', function (req, res, next) {
   try {
-    var project_name = req.body.project_name;
-    var manage_server_port = req.body.manage_server_port;
-    let css_compress_ie = req.body.css_compress_ie
-    let js_babel = (req.body.js_babel == 'true')?true:false
 
-    let js_babel_old = global.config.js_babel;
+    let mody_config = {}
 
-    if(js_babel != js_babel_old){
-      const fewebpack = require('../lib/fewebpack')
-      fewebpack.restart()
+    if(req.body.project_name != null){
+      mody_config.project_name = req.body.project_name
+    }
+    if(req.body.manage_server_port != null){
+      mody_config.manage_server_port = req.body.manage_server_port
+    }
+    if(req.body.css_compress_ie != null){
+      mody_config.css_compress = {}
+      mody_config.css_compress.css_compress_ie = req.body.css_compress_ie
+    }
+    if(req.body.js_babel != null){
+      mody_config.js_babel = (req.body.js_babel == 'true')?true:false
+      if(mody_config.js_babel != global.config.js_babel){
+        const fewebpack = require('../lib/fewebpack')
+        fewebpack.restart()
+      }      
     }
 
-    var newconfig = _.extend(global.config, {
-      project_name: project_name,
-      manage_server_port: manage_server_port,
-      css_compress:{
-        css_compress_ie: css_compress_ie
-      },
-      js_babel: js_babel
-    });
+    var newconfig = _.extend(global.config, mody_config);
 
     configfile.save(newconfig);
 

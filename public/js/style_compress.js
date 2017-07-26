@@ -63,64 +63,129 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 5:
+/***/ 0:
 /***/ (function(module, exports) {
 
 /**
- * tips
+ * modal alert
  */
 
-var tips_data = [
-  'public文件夹里面都是不需要做任何处理的文件，发布的时候将原封不动的复制到指定文件夹。',
-  'libs文件夹里面的内容不会被编译，里面的所有的js和css文件会被合并成 js/libs.js 和 css/libs.css。',
-  '样式文件支持三种格式，less,scss,css，其中css格式不会进行编译处理。',
-  'js文件支持三种形式，原生的js，需要Babel.js处理的ES6语法js，和Typescript，默认是原生的js，Babel.js需要在设置中开启才能使用。',
-  '系统不提供删除文件的功能（本来是有的），因为在Node.js里面删除文件不会进入回收站，会直接彻底删除。',
-  '代理服务是前后端结合开发的利器，代理掉其他网站的接口是最常用的方法'
-]
 
-var index = Math.floor(Math.random()*tips_data.length)
-    
-var tips_html = $('<div class="jumbotron"><h3>Tips</h3><p class="content"></p><p><a class="btn btn-primary btn-lg next_tips">下一条</a> <a class="btn btn-primary btn-lg pre_tips">上一条</a></p></div>')
-
-function show_index(showindex) {
-  $('.content', tips_html).text(tips_data[showindex] + '(' + (showindex+1) + '/' + tips_data.length + ')')
+function modal_alert(options) {
+    if( typeof options == "string"){
+        options = {
+            content: options,
+        }
+    }
+    this.options = $.extend({
+        title: '提示',
+        content: '',
+        onClose: null
+    }, options);
 }
 
-show_index(index)
+modal_alert.prototype.show = function () {
+    var html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><div class="modal-body"><p>' + this.options.content + '</p></div><div class="modal-footer"><button type="button" class="btn btn-primary">确定</button></div></div></div></div>');
+    $("body").append(html);
+    html.modal('show');
 
-tips_html.on('click', '.next_tips', function(){
-  index++
-  if(index == tips_data.length) index = 0
-  show_index(index)
-})
+    html.on('click', '.btn-primary', function(){
+        html.modal('hide');
+    });
 
-tips_html.on('click', '.pre_tips', function(){
-  index--
-  if(index == -1) index = tips_data.length - 1
-  show_index(index)
-})
+    html.on('hidden.bs.modal', function (e) {
+        html.remove();
+        if(this.options.onClose){
+            this.options.onClose();
+        }
+    }.bind(this));
+};
 
-module.exports = function(container){
-  container.html(tips_html)
-}
+module.exports = function(options){
+    var new_modal_alert = new modal_alert(options);
+    new_modal_alert.show();
+};
 
 /***/ }),
 
-/***/ 9:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
+/**
+ * style_compress
+ */
+var modal_alert = __webpack_require__(0);
+
+$('#header_nav>li:eq(3)').addClass('active');
 
 
-let tips = __webpack_require__(5)
-tips($('#tips'))
+function get_config(callback) {
+  $.ajax({
+    url: '/api/get_config',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+    }
+  })
+  .done(function (json) {
+    if(json.re){
+      callback(json.result);
+    }
+  })
+  .fail(function (error) {
+    modal_alert('获取配置文件失败！');
+  })
+}
 
-$('#header_nav li:eq(3)').addClass('active'); 
+get_config(function(config){
+  if(config.css_compress){
+    if(config.css_compress.css_compress_ie){
+      $('#css_compress_ie').val(config.css_compress.css_compress_ie);
+    }
+  }
+  
+});
+
+$('#mody_config_form').on('submit', function () {
+  var css_compress_ie = $('#css_compress_ie').val();
+
+  $.ajax({
+    url: '/api/mody_config',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      css_compress_ie: css_compress_ie
+    }
+  })
+    .done(function (json) {
+      console.info(json);
+      if (json.re) {
+        modal_alert({
+          content: '修改成功！',
+          onClose: function () {
+            self.location.reload();
+          }
+        });
+      }
+      else {
+        modal_alert({ content: '修改失败！' + json.message });
+      }
+    })
+    .fail(function (error) {
+      modal_alert({ content: '修改失败！' + error.message });
+    })
+    .always(function () {
+
+    });
+
+  return false;
+});
+
 
 /***/ })
 

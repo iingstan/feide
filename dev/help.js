@@ -1,4 +1,6 @@
 
 
-console.info('help');
-$('#header_nav li:eq(6)').addClass('active'); 
+let tips = require('./modules/tips/tips')
+tips($('#tips'))
+
+$('#header_nav li:eq(3)').addClass('active'); 

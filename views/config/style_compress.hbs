@@ -1,0 +1,27 @@
+<h3>CSS压缩设置</h3>
+
+<div class="managelist">
+    <form action="" id="mody_config_form">
+
+
+    <div class="form-group">
+        <label class="control-label" for="css_compress_ie">IE兼容性 </label>
+        <select id="css_compress_ie" class="form-control">
+            <option value="*">Internet Explorer 10+</option>
+            <option value="ie9">Internet Explorer 9+</option>
+            <option value="ie8">Internet Explorer 8+</option>
+            <option value="ie7" selected>Internet Explorer 7+</option>
+        </select>
+    </div>
+
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">提交</button> &nbsp; 
+        <button type="reset" class="btn btn-default">重置</button>
+    </div>
+    </form>
+</div>
+
+{{#extend "bodybottom"}}
+<script src="/js/style_compress.js"></script>
+{{/extend}}

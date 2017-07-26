@@ -1,7 +1,8 @@
+//js_compile
+
 var modal_alert = require('./modules/modal_alert/modal_alert');
 
 $('#header_nav>li:eq(3)').addClass('active');
-
 
 function get_config(callback) {
   $.ajax({
@@ -22,22 +23,25 @@ function get_config(callback) {
 }
 
 get_config(function(config){
-  $('#project_name').val(config.project_name);
-  $('#manage_server_port').val(config.manage_server_port);
+  if(config.js_babel){
+    $('#js_babel').attr('checked', true)
+  }
+  else{
+    $('#js_babel').attr('checked', false)
+  }
   
 });
 
+
 $('#mody_config_form').on('submit', function () {
-  var project_name = $.trim($('#project_name').val());
-  var manage_server_port = $.trim($('#manage_server_port').val());
+  var js_babel = $('#js_babel').is(':checked'); 
 
   $.ajax({
     url: '/api/mody_config',
     type: 'POST',
     dataType: 'json',
     data: {
-      project_name: project_name,
-      manage_server_port: manage_server_port
+      js_babel: js_babel
     }
   })
     .done(function (json) {
@@ -57,9 +61,6 @@ $('#mody_config_form').on('submit', function () {
     .fail(function (error) {
       modal_alert({ content: '修改失败！' + error.message });
     })
-    .always(function () {
-
-    });
 
   return false;
 });
