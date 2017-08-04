@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 
+var argv = require('minimist')(process.argv.slice(2));
+let path = require('path')
+
 global.workdir = process.cwd(); //工作目录
 global.appdir = __dirname; //程序目录
+
+if (argv.v) {
+  let jsonfile = require('jsonfile');
+  console.log(jsonfile.readFileSync(path.join(global.appdir, 'package.json')).version)
+}
+return false;
 
 let files = require('./lib/files');
 let manage_server = require('./lib/manage_server');
@@ -9,7 +18,9 @@ if(!files.exists('./feauto.config.json')){
   let rndport = 8000 + Math.floor(Math.random()*999+1);
   manage_server(rndport).then(function(){
     let opn = require('opn');
-    opn('http://localhost:' + rndport + '/init/');
+    opn('http://localhost:' + rndport + '/init/', {
+      app: 'chrome'
+    });
   });
   return false;
 }
