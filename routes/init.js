@@ -16,7 +16,7 @@ router.post('/init_project', function(req, res, next) {
   let new_file = parseInt(req.body.new_file)
   let resultjson = new jsonresult(true, '', null);
 
-  files.createFileByTemplate('new_config', path.join(global.workdir, 'feauto.config.json'), {
+  files.createFileByTemplate('new_config', path.join(global.workdir, 'feide.config.json'), {
     project_name: project_name,
     server_port: server_port
   });
@@ -27,7 +27,7 @@ router.post('/init_project', function(req, res, next) {
     })
   }
 
-  global.config = jsonfile.readFileSync('./feauto.config.json');
+  global.config = jsonfile.readFileSync('./feide.config.json');
     
   res.json(resultjson);
 });

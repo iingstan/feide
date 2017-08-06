@@ -9,12 +9,13 @@ global.appdir = __dirname; //程序目录
 if (argv.v) {
   let jsonfile = require('jsonfile');
   console.log(jsonfile.readFileSync(path.join(global.appdir, 'package.json')).version)
+  return false;
 }
-return false;
+
 
 let files = require('./lib/files');
 let manage_server = require('./lib/manage_server');
-if(!files.exists('./feauto.config.json')){ 
+if(!files.exists('./feide.config.json')){ 
   let rndport = 8000 + Math.floor(Math.random()*999+1);
   manage_server(rndport).then(function(){
     let opn = require('opn');
@@ -31,7 +32,7 @@ memory_file.data = {}; //内存文件
 
 
 const jsonfile = require('jsonfile');
-global.config = jsonfile.readFileSync('./feauto.config.json'); //项目设置
+global.config = jsonfile.readFileSync('./feide.config.json'); //项目设置
 
 
 const file_make = require('./lib/file_watch/file_make');
