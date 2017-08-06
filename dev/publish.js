@@ -54,7 +54,7 @@ function create_publish(success, fail) {
   var publish_name = $.trim($('#publish_name').val());
   var publish_folder = $.trim($('#publish_folder').val());
   var publish_page = $('#publish_page').is(":checked");
-  var publish_datefolder = $('#publish_datefolder').is(":checked");
+  // var publish_datefolder = $('#publish_datefolder').is(":checked");
   //var publish_delete_file = $('#publish_delete_file').is(":checked");
   var publish_compress = $('#publish_compress').is(":checked");
 
@@ -66,7 +66,7 @@ function create_publish(success, fail) {
       publish_name: publish_name,
       publish_folder: publish_folder,
       publish_page: publish_page,
-      publish_datefolder: publish_datefolder,
+      // publish_datefolder: publish_datefolder,
       //publish_delete_file: publish_delete_file,
       publish_compress: publish_compress
     }
@@ -175,7 +175,7 @@ function edit_publish(index, success, fail) {
   var publish_name = $.trim($('#publish_name').val());
   var publish_folder = $.trim($('#publish_folder').val());
   var publish_page = $('#publish_page').is(":checked");
-  var publish_datefolder = $('#publish_datefolder').is(":checked");
+  // var publish_datefolder = $('#publish_datefolder').is(":checked");
   //var publish_delete_file = $('#publish_delete_file').is(":checked");
   var publish_compress = $('#publish_compress').is(":checked");
 
@@ -188,7 +188,7 @@ function edit_publish(index, success, fail) {
       publish_name: publish_name,
       publish_folder: publish_folder,
       publish_page: publish_page,
-      publish_datefolder: publish_datefolder,
+      // publish_datefolder: publish_datefolder,
       //publish_delete_file: publish_delete_file,
       publish_compress: publish_compress
     }

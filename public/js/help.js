@@ -68,7 +68,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 /**
@@ -117,7 +117,7 @@ module.exports = function(container){
 
 
 
-let tips = __webpack_require__(5)
+let tips = __webpack_require__(4)
 tips($('#tips'))
 
 $('#header_nav li:eq(3)').addClass('active'); 

@@ -75,7 +75,7 @@
  * index
  */
 
-let tips = __webpack_require__(5)
+let tips = __webpack_require__(4)
 
 tips($('#tips'))
 
@@ -101,7 +101,7 @@ $.ajax({
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /***/ (function(module, exports) {
 
 /**
