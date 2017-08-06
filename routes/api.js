@@ -73,7 +73,7 @@ router.post('/mody_config', function (req, res, next) {
 
 
 /**
- * 删除母版页
+ * 删除布局页
  */
 router.post('/delete_layout', function (req, res, next) {
   var layout_name = req.body.layout_name;

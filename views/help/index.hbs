@@ -1,6 +1,110 @@
 <h3>{{title}}</h3>
 <div id="tips"></div>
 
+
+<textarea name="" id="aa" cols="30" rows="10" style="display:none;">
+#### 功能概览
+
+集成下列技术和功能：
+
+* Handlebar
+* 类似于ASP.Net MVC的Razor引擎HTML架构
+* Less
+* Sass(只支持Scss)
+* Typescript
+* Babel.js
+* JS直接引用文本文件
+* 图片自动转换base64
+* 图片自动合成雪碧图，并自动生成CSS
+
+默认都支持以上技术的最新版，如有版本落后，请反馈。若想固定版本，请项目本地安装feide，并且不要手动升级。
+
+####页面
+页面使用handlebars引擎，以hbs为后缀名。
+
+页面分三种类型：主页面(page)，布局页(layout)，部分页(partial)。
+
+三种页面都可以配置模板数据，在页面同目录下建立{页面名}.json文件，json文件里面写JSON格式数据即可。
+
+###### 主页面(page)
+
+主页面(page)即我们理解的一般页面。放在./page/目录下。
+
+主页面(page)可以预览和发布。预览地址为：http://localhost:{项目端口号}/preview/{页面名称}。发布时放在发布目录根下。
+
+布局页(layout)和部分页(partial)不会被发布。
+
+######布局页(layout)
+
+布局页(layout)是用来统一页面代码布局的页面。文件放在./page/_layout/下面。
+
+主页面声明使用哪个布局页(layout)是在页面数据文件中的layout字段，例如：```{"layout":"布局页的名字"}```，也可以在集成环境里面选择。
+
+布局页默认的代码块为\{{{body}}}，主页面中不声明代码块的代码都会在这里。
+
+在布局页(layout)中创建代码块为：```\{{{block "代码块的名字"}}}```，主页面(page)中使用代码块为：
+```
+\{{#extend "代码块的名字"}}
+<div>code</div>
+\{{/extend}}
+```
+
+######部分页(partial)
+
+部分页(partial)是用来重复使用的局部页面。文件放在./page/_parital/下面。
+
+三种页面都可以引用部分页(partial)。 使用方法：```\{{partial "部分页的名字"}} ```，不用输入路径，会自动找到。
+
+#### JS
+
+JS部分使用webpack实现模块化功能。
+
+除非你使用Typescript，建议统一使用CommonJS模块化语法。
+
+除了一般的JS模块，feide还支持require以下文件格式：
+
+* ```html,hbs```文件，作用为导入html,hbs文件的内容
+* ```*_base64.{jpg,png,gif}```的图片，会被转换成base64的字符串
+* ```*.{jpg,png,gif}```的图片，不会转换，当发布的时候，会发布到发布文件夹下面
+* ```ts```文件，会被当作typescript文件编译
+* ```less,scss```会被当作less,sass文件，集合起来放在```./css/_parital/_module_style.{less,scss}```文件里面，按需使用
+
+另外，js编译选项里面还有支持babel.js的选项，开启之后所有的js文件会被当成ES6文件被babel.js编译。(babel.js编译后的文件有兼容性要求，至少>=IE9，对浏览器兼容有要求的尽量不要使用，Typescript也类似)。
+
+
+#### CSS
+
+CSS文件目前支持Less,Sass(Scss)。文件放在```./css/```文件夹下面。
+
+预览和发布的时候会编译成css文件夹。预览时的路径是```http://localhost:{{config.manage_server_port}}/preview/css/{文件名称}.css```。发布的时候会发布到发布文件夹的```./css/```文件夹下面。
+
+还有一种是部分CSS文件，用来给上面的CSS文件导入用。放在```./_parital/```下面。不会被预览和发布。导入的语法是```@import './_partial/文件名.{less,scss}'```
+
+另外还有系统生成的两个CSS，```./_parital/_sprite.less```，```./_parital/_module_style.less```， ```./_parital/_sprite.less```是合成雪碧图的CSS，```./_parital/_module_style.less```是JS模块中引用的所有的CSS，均按需使用。
+
+
+###### 自动合成雪碧图
+
+需要使用自动合成雪碧图功能的话，只需要把图片放在```./css/_sprite/```即可。
+
+预览模式下，合成的雪碧图大图路径是： ```http://localhost:{{config.manage_server_port}}/preview/css/img/sprites.png```，该文件在内存中，不会出现在你的项目中。
+
+发布的时候，雪碧大图会发布到：发布文件夹```./css/img/sprites.png```。
+
+除了会合并雪碧大图，系统还会帮你把各个小图片的样式写好，放在```./css/_parital/_module_style.{less,scss}```里面。对应的小图片名字就是class名字。页面中要使用请在页面CSS中引用上面的文件。
+
+#### 代理服务
+
+</textarea>
+<div class="md" id="bb">
+
+</div>
+
+
 {{#extend "bodybottom"}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
+<script>
+$('#bb').html(markdown.toHTML($('#aa').val()))
+</script>
 <script src="/js/help.js"></script>
 {{/extend}}

@@ -16,9 +16,9 @@
 </div>
 
 <div class="pageblock">
-  <h3>母版页列表(layout)</h3>
+  <h3>布局页列表(layout)</h3>
   <div class="page_fun">
-    <a href="javascript:;" id="create_layout_btn" class="btn btn-primary btn-sm">新建母版页</a>
+    <a href="javascript:;" id="create_layout_btn" class="btn btn-primary btn-sm">新建布局页</a>
   </div>
   <div id="layoutlist"></div>
 </div>
@@ -57,13 +57,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">新建母版页</h4>
+          <h4 class="modal-title">新建布局页</h4>
         </div>
         <form action="" id="create_layout_form">
           <div class="modal-body">
 
             <div class="form-group">
-              <label class="control-label" for="layout_name">母版页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
+              <label class="control-label" for="layout_name">布局页文件名 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用英文数字和下划线做文件名"></span></label>
               <input class="form-control" id="layout_name" type="text" pattern="[A-z0-9_]+" required>
             </div>
 
@@ -225,12 +225,12 @@
               <input class="form-control" id="page_name" type="text" pattern="[A-z0-9_]+" required>
             </div>
             <div class="form-group">
-              <label class="control-label" for="page_layout">选择母版页 (Layout)</label>
+              <label class="control-label" for="page_layout">选择布局页 (Layout)</label>
               <select name="" id="page_layout" class="form-control select select-primary" data-toggle="select">
                 \{{#each this}}
                 <option value="\{{this}}">\{{this}}</option>
                 \{{/each}}
-                <option value="">不使用母版页</option>
+                <option value="">不使用布局页</option>
               </select>
             </div>
             <div class="form-group">

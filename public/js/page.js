@@ -349,7 +349,7 @@ function delete_libs(libsname, success, fail) {
 }
 
 /**
- * 获取母版页列表
+ * 获取布局页列表
  * 
  * @param {any} callback 
  */
@@ -543,7 +543,7 @@ function create_libs(create_libs_uploadfile, create_libs_uploadurl, success, fai
 }
 
 /**
- * 母版页列表
+ * 布局页列表
  * 
  */
 function get_layout() {
@@ -572,7 +572,7 @@ function get_layout() {
 get_layout(); 
 
 /**
- * 新建母版页
+ * 新建布局页
  */
 $('#create_layout_btn').on('click', function () {
   var html = $($("#create_layout_template").html());
@@ -596,7 +596,7 @@ $('#create_layout_btn').on('click', function () {
 });
 
 /**
- * 新建母版页
+ * 新建布局页
  * 
  * @param {any} success 成功回调
  * @param {any} fail 失败回调
@@ -634,7 +634,7 @@ function create_layout(success, fail) {
 };
 
 /**
- * 删除母版页
+ * 删除布局页
  */
 $('body').on('click', '.delete_layout_btn', function () {
     var layoutname = $(this).data('layoutname');
@@ -652,7 +652,7 @@ $('body').on('click', '.delete_layout_btn', function () {
 });
 
 /**
- * 删除母版页
+ * 删除布局页
  * 
  * @param {any} layout_name 
  */

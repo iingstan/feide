@@ -101,7 +101,7 @@ router.post('/save_page_data', function(req, res, next) {
 });
 
 /**
- * 修改页面母版页
+ * 修改页面布局页
  */
 router.post('/mody_page_layout', function(req, res, next) {
   let layout = req.body.layout;
@@ -122,7 +122,7 @@ router.post('/mody_page_layout', function(req, res, next) {
 
 
 /**
- * 新建母版页
+ * 新建布局页
  */
 router.post('/create_layout', function (req, res, next) {
   var layout_name = req.body.layout_name;
@@ -230,7 +230,7 @@ router.get('/libslist', function (req, res, next) {
 
 
 /**
- * 母版页列表
+ * 布局页列表
  */
 router.get('/layoutlist', function (req, res, next) {
   files.getFileInfo('page/_layout/**/*.hbs').then(files=>{

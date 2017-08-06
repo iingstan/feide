@@ -196,7 +196,7 @@ get_page_list();
 
 
 /**
- * 母版页列表
+ * 布局页列表
  * 
  */
 function get_layout(callback) {
@@ -231,7 +231,7 @@ function get_layout_list() {
 get_layout_list()
 
 /**
- * 新建母版页
+ * 新建布局页
  */
 $('#create_layout_btn').on('click', function () {
   var html = $($("#create_layout_template").html());
@@ -256,7 +256,7 @@ $('#create_layout_btn').on('click', function () {
 
 
 /**
- * 新建母版页
+ * 新建布局页
  * 
  * @param {any} success 成功回调
  * @param {any} fail 失败回调
@@ -556,7 +556,7 @@ function mody_page_data(filepath, data, succ, fail) {
 
 
 /**
- * 修改页面母版页
+ * 修改页面布局页
  */
 $('body').on('click', '.change_layout_btn', function(){
   var pagepath = $(this).data('path');
@@ -574,7 +574,7 @@ $('body').on('click', '.change_layout_btn', function(){
     }));
 
     var layout_formmodal = new modal_form({
-      title: '选择' + filename + '母版页',
+      title: '选择' + filename + '布局页',
       formid: 'page_layout_form',
       content: html
     });
@@ -625,7 +625,7 @@ $('body').on('click', '.change_layout_btn', function(){
 });
 
 /**
- * 修改页面母版页
+ * 修改页面布局页
  */
 function mody_page_layout(filepath, layout, succ, fail) {
   $.ajax({
