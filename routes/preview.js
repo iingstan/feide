@@ -15,7 +15,7 @@ let memory_file = require('../lib/memory_file')
 /**
  * 页面
  */
-router.get('/:pagename([a-zA-z0-9_]+)', function (req, res, next) {
+router.get('/:pagename([a-zA-z0-9_-]+)', function (req, res, next) {
   let pagename = req.params.pagename;
   let filepath = './page/' + pagename + '.hbs';
   if (files.exists(filepath)) {
@@ -25,7 +25,7 @@ router.get('/:pagename([a-zA-z0-9_]+)', function (req, res, next) {
   }
 });
 
-router.get('/:pagename([a-zA-z0-9_]+).html', function (req, res, next) {
+router.get('/:pagename([a-zA-z0-9_-]+).html', function (req, res, next) {
   let pagename = req.params.pagename;
   let filepath = './page/' + pagename + '.hbs';
   if (files.exists(filepath)) {
@@ -47,7 +47,7 @@ router.get('/js/libs.js', function (req, res) {
 /**
  * page js
  */
-router.get('/js/:jsname([a-zA-z0-9_]+).js', function (req, res, next) {
+router.get('/js/:jsname([a-zA-z0-9_-]+).js', function (req, res, next) {
   let jsname = req.params.jsname;
   let filepath = './js/' + jsname + '.js';
 
@@ -70,7 +70,7 @@ router.get('/css/libs.css', function (req, res) {
 /**
  * page less
  */
-router.get('/css/:cssname([a-zA-z0-9_]+).css', function (req, res, next) {
+router.get('/css/:cssname([a-zA-z0-9_-]+).css', function (req, res, next) {
   let cssname = req.params.cssname;
 
   let filepath = './css/' + cssname + '.less';
