@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 22);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -157,22 +157,23 @@ module.exports = function(options){
 
 /***/ }),
 
-/***/ 22:
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * 发布页面js
- */
-var modal_confirm = __webpack_require__(1);
+
 var modal_alert = __webpack_require__(0);
+var modal_form = __webpack_require__(3);
+var delete_file_confirm =  __webpack_require__(2);
 
-$('#header_nav>li:eq(1)').addClass('active');
+$('#header_nav li:eq(0)').addClass('active');
 
-var config = null;
 
-function get_publish_list() {
+/**
+ * module列表
+ */
+function get_module_list() {
   $.ajax({
-    url: '/api/get_config',
+    url: '/page/module_list',
     type: 'GET',
     dataType: 'json',
     data: {
@@ -181,66 +182,72 @@ function get_publish_list() {
   })
   .done(function (json) {
     if (json.re) {
-      config = json.result;
+      var html = Handlebars.compile($("#modulelist_template").html())(json.result);
+      $('#modulelist').html(html);
     }
   })
   .fail(function (error) {
 
-  })
+  });  
 }
+get_module_list();
 
-get_publish_list();
-
-
-$('#create_publish_btn').on('click', function () {
-  var html = $($("#create_publish_template").html());
-  $('body').append(html);
-  html.modal('show');
+/**
+ * 新建module
+ */
+$('#create_module_btn').on('click', function () {
+  
+  var html = $(Handlebars.compile($("#create_module_template").html())());
   $('[data-toggle="tooltip"]', html).tooltip();
 
-  html.on('hidden.bs.modal', function (e) {
-    html.remove();
+  var newmodalform = new modal_form({
+    title: '新建模块',
+    content: html,
+    formid: 'create_module_form'
   });
 
-  $('#create_publish_form').on('submit', function () {
-    create_publish(function () {
-      self.location.reload();
+  newmodalform.show();
+
+  setTimeout(function(){
+    $('#module_name').focus()
+  },500)
+
+  $('#create_module_form').on('submit', function () {
+    create_module(function () {
+      get_module_list()
+      newmodalform.close()
     }, function (message) {
-      modal_alert(message);
+      modal_alert(message)
     });
-    return false;
-  });
+    return false
+  });    
+
+  return false
 });
 
-function create_publish(success, fail) {
-  var publish_name = $.trim($('#publish_name').val());
-  var publish_folder = $.trim($('#publish_folder').val());
-  var publish_page = $('#publish_page').is(":checked");
-  // var publish_datefolder = $('#publish_datefolder').is(":checked");
-  //var publish_delete_file = $('#publish_delete_file').is(":checked");
-  var publish_compress = $('#publish_compress').is(":checked");
+function create_module(success, fail) {
+  var module_name = $.trim($('#module_name').val());
+  var module_description = $.trim($('#module_description').val());
+  var module_template = $('#module_template').val();
+  var create_md = $('#create_md').is(':checked')
 
   $.ajax({
-    url: '/api/create_publish',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      publish_name: publish_name,
-      publish_folder: publish_folder,
-      publish_page: publish_page,
-      // publish_datefolder: publish_datefolder,
-      //publish_delete_file: publish_delete_file,
-      publish_compress: publish_compress
-    }
-  })
+      url: '/page/create_module',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        module_name: module_name,
+        module_description: module_description,
+        module_template: module_template,
+        create_md: create_md
+      }
+    })
     .done(function (json) {
-      //console.info(json);
       if (json.re) {
         if (success) {
           success();
         }
-      }
-      else {
+      } else {
         if (fail) {
           fail(json.message);
         }
@@ -251,162 +258,113 @@ function create_publish(success, fail) {
         fail(error.message);
       }
     })
-    .always(function () {
-
-    });
 }
 
-$('.delete_publish_btn').on('click', function () {
-  var index = $(this).data('index');
-  modal_confirm({
-    content: '确定要删除吗？',
-    onConfirm: function () {
-      delete_publish(index);
-    }
-  });
-  return false;
-});
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
 
 /**
- * 删除发布配置
- * 
- * @param {any} index 
+ * 删除文件提示框
  */
-function delete_publish(index) {
+
+var modal_confirm = __webpack_require__(1);
+var modal_alert = __webpack_require__(0)
+
+function delete_file(filepath, success, fail) {
   $.ajax({
-    url: '/api/delete_publish',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      index: index
-    }
-  })
-    .done(function (json) {
-      if (json.re) {
-        self.location.reload();
+      url: '/api/delete_file',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        filepath: filepath
       }
-      else {
-        modal_alert({
-          content: "删除失败！ " + json.message
-        });
-      }
-    })
-    .fail(function (error) {
-      modal_alert({
-        content: "删除失败！ " + error.message
-      });
-    })
-    .always(function () {
-
-    });
-};
-
-
-$('.edit_publish_btn').on('click', function () {
-  var index = $(this).data('index');
-
-  var html = $(Handlebars.compile($("#edit_publish_template").html())(config.publish[index]));
-
-  $('body').append(html);
-  html.modal('show');
-  $('[data-toggle="tooltip"]', html).tooltip();
-
-  html.on('hidden.bs.modal', function (e) {
-    html.remove();
-  });
-
-  $('#edit_publish_form').on('submit', function () {
-    edit_publish(index, function () {
-      self.location.reload();
-    }, function (message) {
-      modal_alert(message);
-    });
-    return false;
-  });
-  return false;
-});
-
-
-
-/**
- * 修改发布配置
- * 
- * @param {any} index 
- */
-function edit_publish(index, success, fail) {
-  var publish_name = $.trim($('#publish_name').val());
-  var publish_folder = $.trim($('#publish_folder').val());
-  var publish_page = $('#publish_page').is(":checked");
-  // var publish_datefolder = $('#publish_datefolder').is(":checked");
-  //var publish_delete_file = $('#publish_delete_file').is(":checked");
-  var publish_compress = $('#publish_compress').is(":checked");
-
-  $.ajax({
-    url: '/api/edit_publish',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      index: index,
-      publish_name: publish_name,
-      publish_folder: publish_folder,
-      publish_page: publish_page,
-      // publish_datefolder: publish_datefolder,
-      //publish_delete_file: publish_delete_file,
-      publish_compress: publish_compress
-    }
-  })
-    .done(function (json) {
-      //console.info(json);
-      if (json.re) {
-        if (success) {
-          success();
-        }
-      }
-      else {
-        if (fail) {
-          fail(json.message);
-        }
-      }
-    })
-    .fail(function (error) {
-      if (fail) {
-        fail(error.message);
-      }
-    })
-    .always(function () {
-
-    });
-};
-
-$('.publish_publish_btn').on('click', function () {
-  var index = $(this).data('index');
-
-  $.ajax({
-    url: '/publish/publish',
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      index: index
-    }
   })
   .done(function (json) {
-    if(json.re){
-      modal_alert('发布成功！');
-    }
-    else{
-      modal_alert('发布失败！' + json.message);
+    if (json.re) {
+      if (success) {
+        success();
+      }
+    } else {
+      if (fail) {
+        fail(json.message);
+      }
     }
   })
   .fail(function (error) {
-    modal_alert(error.message);
-  })
-  .always(function () {
-
+    if (fail) {
+      fail(error.message);
+    }
   });
+}
+
+module.exports = {
+  bind: function(btn, callback){
+    $('body').on('click', btn, function(){
+      var filepath = $(this).data('filepath')
+      modal_confirm({
+        content:'确定删除 <strong>' + filepath + '</strong>？',
+        onConfirm: function(){
+          delete_file(filepath, function(){
+            callback();
+          }, function(message){
+            modal_alert(message);
+          });
+        }
+      });
+      return false;
+    })
+  }
+}
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+/**
+ * 模态框 表单
+ */
+
+function modal_form(options) {
+    this.options = $.extend({
+        title: '提示',
+        formid: '',
+        content: '',
+        onClose: null
+    }, options);
+}
+
+modal_form.prototype.show = function () {
+    var html = this.html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><form action="" id="' + this.options.formid + '"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default form_cancel_btn"><span class="fui-cross"></span> 取消</button><button type="submit" class="btn btn-primary form_submit_btn"><span class="fui-check"></span> 确定</button></div></form></div></div></div>');
+    $('.modal-body', html).append(this.options.content);
+    $("body").append(html);
+    html.modal('show');
+
+    // html.on('click', '.form_submit_btn', function(){
+    //     html.modal('hide');
+    // });
+
+    html.on('click', '.form_cancel_btn', function(){
+        html.modal('hide');
+    });    
+
+    html.on('hidden.bs.modal', function (e) {
+        html.remove();
+        if(this.options.onClose){
+            this.options.onClose();
+        }
+    }.bind(this));
+};
+
+modal_form.prototype.close = function(){
+  this.html.modal('hide');
+}
 
 
-  return false;
-});
+module.exports = modal_form
 
 /***/ })
 

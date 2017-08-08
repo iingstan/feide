@@ -1,0 +1,61 @@
+<h3>模块</h3>
+
+<div class="pageblock">
+  <div>
+    <a href="#" id="create_module_btn" class="btn btn-inverse"><span class="fui-plus"></span> 新建模块</a>
+    <a href="#" id="browser_module_btn" class="btn btn-inverse"><span class="glyphicon glyphicon-download-alt"></span> 从模块库中下载</a>
+  </div>
+  <h5>模块列表(js/modules) </h5>
+  
+  <div id="modulelist"></div>
+</div>
+
+<script id="modulelist_template" type="text/x-handlebars-template">
+  <div class="module_list row">
+    \{{#each this}}
+    <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="panel-title">\{{this.filename}}</div>
+        <div class="panel-rifun"><span class="funicon fui-upload" title="发布模块"></span> <span class="funicon fui-new" title="编辑模块信息"></span></div>
+      </div>
+      <div class="panel-body">
+        Panel content
+      </div>
+    </div>
+    </div>
+    \{{/each}}
+  </div>
+</script>
+
+
+<script id="create_module_template" type="text/x-handlebars-template">
+  <div class="form-group">
+    <label class="control-label" for="module_name">模块名称 <span class="required">*</span> <span class="glyphicon glyphicon-info-sign"  data-toggle="tooltip" data-placement="right" data-original-title="只能使用小写英文,数字,下划线,减号做模块名称"></span></label>
+    <input class="form-control" id="module_name" type="text" pattern="[a-z0-9_-]+" required>
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="module_description">模块描述</label>
+    <input class="form-control" id="module_description" type="text">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="module_template">初始化代码</label>
+    <select class="form-control" id="module_template">
+      <option value="none">无</option>
+      <option value="function">Function</option>
+      <option value="object">Object</option>
+      <option value="lclass">类Class</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="control-label"><input id="create_md" class="midcheck" type="checkbox"> 新建 README.md 文件</label>
+    
+  </div>
+
+
+</script>
+
+
+{{#extend "bodybottom"}}
+<script src="/js/page_module.js"></script>
+{{/extend}}

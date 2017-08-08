@@ -111,6 +111,12 @@ textarea.code{
   height: 200px;
 }
 
+.midcheck{
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+}
+
 .bigcheck{
   width: 20px;
   height: 20px;
@@ -123,4 +129,21 @@ textarea.code{
 
 .md h1,.md h2, .md h3, .md h4, .md h5, .md h6{
   padding-top: 2%;
+}
+
+.panel-rifun{
+  position: absolute;
+  right: 28px;
+  top: 8px;
+}
+
+.panel-rifun .funicon{
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 6px;
+  color: #4C9BE1;
+}
+
+.panel-rifun .funicon:hover{
+  color: #91CCFF;
 }

@@ -38,6 +38,10 @@ router.get('/sprite', function(req, res, next) {
   res.render('page/sprite', { title: 'CSS Sprite', config: global.config });
 });
 
+router.get('/modules', function(req, res, next) {
+  res.render('page/modules', { title: 'Modules', config: global.config });
+});
+
 
 
 router.get('/sprite_mergecss', function(req, res, next) {
@@ -160,6 +164,27 @@ router.post('/create_page', function (req, res, next) {
     let resultjson = new jsonresult(false, error.message, null);
     res.json(resultjson);
   });
+});
+
+/**
+ * 新建模块
+ */
+router.post('/create_module', function (req, res, next) {
+  let create_module_options = {}
+  create_module_options.module_name = req.body.module_name
+  create_module_options.module_description = req.body.module_description
+  create_module_options.create_md = req.body.create_md == 'true' ? true : false
+  create_module_options.module_template = req.body.module_template
+
+  let femodule = require('../lib/femodule')
+
+  femodule.create(create_module_options).then(function(){
+    let resultjson = new jsonresult(true, '', null);
+    res.json(resultjson);
+  }).catch(function(error){
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  })
 });
 
 /**
@@ -379,6 +404,18 @@ router.get('/sprites_list', function (req, res, next) {
   res.json(resultjson)
 });
 
+/**
+ * 获取js列表
+ */
+router.get('/module_list', function (req, res, next) {
+  files.getModules().then(files=>{
+    let resultjson = new jsonresult(true, '', files);
+    res.json(resultjson);
+  }).catch(error=>{
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  });
+});
 
 
 module.exports = router;
