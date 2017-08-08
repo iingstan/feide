@@ -178,6 +178,12 @@ router.post('/create_module', function (req, res, next) {
 
   let femodule = require('../lib/femodule')
 
+  if(femodule.exists(create_module_options.module_name)){
+    let resultjson = new jsonresult(false, '已经有此模块', null)
+    res.json(resultjson)
+    return false
+  }
+
   femodule.create(create_module_options).then(function(){
     let resultjson = new jsonresult(true, '', null);
     res.json(resultjson);
@@ -405,11 +411,11 @@ router.get('/sprites_list', function (req, res, next) {
 });
 
 /**
- * 获取js列表
+ * 获取模块列表
  */
 router.get('/module_list', function (req, res, next) {
-  files.getModules().then(files=>{
-    let resultjson = new jsonresult(true, '', files);
+  files.getModules().then(modules=>{
+    let resultjson = new jsonresult(true, '', modules);
     res.json(resultjson);
   }).catch(error=>{
     let resultjson = new jsonresult(false, error.message, null);
