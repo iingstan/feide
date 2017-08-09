@@ -118,7 +118,10 @@ module.exports = function(options){
 var modal_confirm = __webpack_require__(1);
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip();
+  setTimeout(function() {
+    $('[data-toggle="tooltip"]').tooltip();    
+  }, 500);
+
 });
 
 

@@ -17,7 +17,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <div class="panel-title">\{{this.filename}}</div>
-        <div class="panel-rifun"><span class="funicon fui-upload" title="发布模块"></span> <span class="funicon fui-new" title="编辑模块信息"></span></div>
+        <div class="panel-rifun"><span class="funicon fui-upload" data-toggle="tooltip" data-placement="top" data-original-title="发布模块"></span> <span class="funicon fui-new edit_module_json" data-modulename="\{{this.filename}}" data-toggle="tooltip" data-placement="top" data-original-title="编辑模块信息(package.json)"></span></div>
       </div>
       <div class="panel-body">
         \{{this.json.description}}&nbsp;
@@ -44,15 +44,32 @@
       <option value="none">无</option>
       <option value="function">Function</option>
       <option value="object">Object</option>
-      <option value="lclass">类Class</option>
+      <option value="lclass">类Class(function prototype)</option>
     </select>
   </div>
   <div class="form-group">
     <label class="control-label"><input id="create_md" class="midcheck" type="checkbox"> 新建 README.md 文件</label>
-    
   </div>
+</script>
 
-
+<script id="edit_module_template" type="text/x-handlebars-template">
+  <h6>\{{module_name}}</h6>
+  <div class="form-group">
+    <label class="control-label" for="module_description">模块描述(description)</label>
+    <input class="form-control" id="module_description" type="text" value="\{{description}}">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="module_version">版本号(version)，必须使用语义化三段整数式版本号，例如：1.3.14</label>
+    <input class="form-control" id="module_version" type="text" value="\{{version}}">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="module_main">主JS文件(main)</label>
+    <input class="form-control" id="module_main" type="text" value="\{{main}}">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="module_keywords">关键字(keywords)，多个关键字用英文逗号分隔</label>
+    <input class="form-control" id="module_keywords" type="text" value="\{{keywords}}">
+  </div>  
 </script>
 
 

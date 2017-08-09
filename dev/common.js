@@ -1,7 +1,10 @@
 var modal_confirm = require('./modules/modal_confirm/modal_confirm');
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip();
+  setTimeout(function() {
+    $('[data-toggle="tooltip"]').tooltip();    
+  }, 500);
+
 });
 
 

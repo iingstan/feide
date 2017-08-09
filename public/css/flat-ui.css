@@ -3155,7 +3155,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   padding: 0 9px;
 }
 .tooltip-inner {
-  max-width: 183px;
+  max-width: 300px;
   line-height: 1.286;
   padding: 12px 12px;
   color: #ffffff;

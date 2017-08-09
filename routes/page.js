@@ -194,6 +194,29 @@ router.post('/create_module', function (req, res, next) {
 });
 
 /**
+ * 修改模块
+ */
+router.post('/mody_module', function (req, res, next) {
+  let module_info = {
+    module_name: req.body.module_name,
+    module_description: req.body.module_description,
+    module_version: req.body.module_version,
+    module_main: req.body.module_main,
+    module_keywords: req.body.module_keywords
+  }
+
+  let femodule = require('../lib/femodule')
+
+  femodule.update(module_info).then(function(){
+    let resultjson = new jsonresult(true, '', null);
+    res.json(resultjson);
+  }).catch(function(error){
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  })
+});
+
+/**
  * 删除页面
  */
 router.post('/delete_page', function (req, res, next) {
@@ -421,6 +444,21 @@ router.get('/module_list', function (req, res, next) {
     let resultjson = new jsonresult(false, error.message, null);
     res.json(resultjson);
   });
+});
+
+/**
+ * 获取单个模块信息
+ */
+router.get('/module_info/:module_name', function (req, res, next) {
+  try {
+    let module_name = req.params.module_name
+    const femodule = require('../lib/femodule')
+    let resultjson = new jsonresult(true, '', femodule.getModulePackageJson(module_name))
+    res.json(resultjson)    
+  } catch (error) {
+    let resultjson = new jsonresult(false, error.message, null)
+    res.json(resultjson)  
+  }
 });
 
 

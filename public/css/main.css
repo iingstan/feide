@@ -131,9 +131,13 @@ textarea.code{
   padding-top: 2%;
 }
 
+.panel-heading{
+  position: relative;
+}
+
 .panel-rifun{
   position: absolute;
-  right: 28px;
+  right: 8px;
   top: 8px;
 }
 

@@ -260,6 +260,95 @@ function create_module(success, fail) {
     })
 }
 
+$('#modulelist').on('click', '.edit_module_json', function(){
+  var module_name = $(this).data('modulename')
+
+  $.ajax({
+    url: '/page/module_info/' + module_name,
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      
+    }
+  })
+  .done(function(json) {   
+    if (json.re) {
+      if(json.result == null){
+        json.result = {}
+      }
+      json.result.module_name = module_name
+      showModyModule(json.result)
+    }
+    else{
+      modal_alert(json.message)
+    }
+  })
+  .fail(function(error) {
+    modal_alert(error.message)
+  })
+
+  return false
+})
+
+function showModyModule(module_json) {
+  var html = $(Handlebars.compile($("#edit_module_template").html())(module_json));
+  $('[data-toggle="tooltip"]', html).tooltip();
+
+  var newmodalform = new modal_form({
+    title: '编辑模块信息(package.json)',
+    content: html,
+    formid: 'mody_module_form'
+  });
+
+  newmodalform.show();
+
+  setTimeout(function(){
+    $('#module_description').focus()
+  },500)
+
+  $('#mody_module_form').on('submit', function () {
+    mody_module(module_json.module_name, function () {
+      get_module_list()
+      newmodalform.close()
+    }, function (message) {
+      modal_alert(message)
+    });
+    return false
+  });  
+}
+
+function mody_module(module_name, success, fail) {
+  var module_info = {
+    module_name: module_name,
+    module_description: $.trim($('#module_description').val()),
+    module_version: $.trim($('#module_version').val()),
+    module_main: $('#module_main').val(),
+    module_keywords: $('#module_keywords').val()    
+  }
+
+  $.ajax({
+      url: '/page/mody_module',
+      type: 'POST',
+      dataType: 'json',
+      data: module_info
+    })
+    .done(function (json) {
+      if (json.re) {
+        if (success) {
+          success();
+        }
+      } else {
+        if (fail) {
+          fail(json.message);
+        }
+      }
+    })
+    .fail(function (error) {
+      if (fail) {
+        fail(error.message);
+      }
+    })
+}
 
 /***/ }),
 
