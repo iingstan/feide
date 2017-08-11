@@ -217,6 +217,43 @@ router.post('/mody_module', function (req, res, next) {
 });
 
 /**
+ * 模块库设置
+ */
+router.post('/setup_module_server', function (req, res, next) {
+  let module_server_info = {
+    module_server_url: req.body.module_server_url,
+    module_author: req.body.module_author
+  }
+
+  let femodule = require('../lib/femodule')
+
+  femodule.setupServer(module_server_info).then(function(){
+    let resultjson = new jsonresult(true, '', null);
+    res.json(resultjson);
+  }).catch(function(error){
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  })
+});
+
+/**
+ * 发布模块
+ */
+router.post('/upload_module', function (req, res, next) {
+  let path = req.body.path
+
+  let femodule = require('../lib/femodule')
+
+  femodule.uploadModule(path).then(function(){
+    let resultjson = new jsonresult(true, '', null);
+    res.json(resultjson);
+  }).catch(function(error){
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  })
+});
+
+/**
  * 删除页面
  */
 router.post('/delete_page', function (req, res, next) {

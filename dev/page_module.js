@@ -187,3 +187,96 @@ function mody_module(module_name, success, fail) {
       }
     })
 }
+
+$('#setup_module_btn').click(function(){
+
+  $.ajax({
+    url: '/api/get_config',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      
+    }
+  })
+  .done(function(json) {   
+    var html = $(Handlebars.compile($("#setup_module_template").html())(json.result));
+    $('[data-toggle="tooltip"]', html).tooltip();
+
+    var newmodalform = new modal_form({
+      title: '模块库设置',
+      content: html,
+      formid: 'setup_module_form'
+    });
+
+    newmodalform.show();   
+    
+    $('#setup_module_form').on('submit', function () {
+      setup_module_server(function () {
+        newmodalform.close()
+      }, function (message) {
+        modal_alert(message)
+      });
+      return false
+    }); 
+  })
+  .fail(function(error) {
+    modal_alert(error.message)
+  })
+
+  return false
+})
+
+
+function setup_module_server(success, fail) {
+  var module_server_info = {
+    module_server_url: $.trim($('#module_server_url').val()),
+    module_author: $.trim($('#module_author').val()) 
+  }
+
+  $.ajax({
+    url: '/page/setup_module_server',
+    type: 'POST',
+    dataType: 'json',
+    data: module_server_info
+  })
+  .done(function (json) {
+    if (json.re) {
+      if (success) {
+        success();
+      }
+    } else {
+      if (fail) {
+        fail(json.message);
+      }
+    }
+  })
+  .fail(function (error) {
+    if (fail) {
+      fail(error.message);
+    }
+  })
+}
+
+$('#modulelist').on('click', '.upload_module_btn', function(){
+  var path = $(this).data('path')
+  $.ajax({
+    url: '/page/upload_module',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      path: path
+    }
+  })
+  .done(function(json) {   
+    if (json.re) {
+      modal_alert('发布成功')
+    }
+    else{
+      modal_alert(json.message)
+    }
+  })
+  .fail(function(error) {
+    modal_alert(error.message)
+  })
+  return false
+})
