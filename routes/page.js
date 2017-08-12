@@ -244,9 +244,8 @@ router.post('/upload_module', function (req, res, next) {
 
   let femodule = require('../lib/femodule')
 
-  femodule.uploadModule(path).then(function(){
-    let resultjson = new jsonresult(true, '', null);
-    res.json(resultjson);
+  femodule.uploadModule(path).then(function(back){
+    res.json(JSON.parse(back));
   }).catch(function(error){
     let resultjson = new jsonresult(false, error.message, null);
     res.json(resultjson);

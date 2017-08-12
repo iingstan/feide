@@ -272,7 +272,7 @@ $('#modulelist').on('click', '.upload_module_btn', function(){
       modal_alert('发布成功')
     }
     else{
-      modal_alert(json.message)
+      modal_alert('发布失败！ ' + json.message)
     }
   })
   .fail(function(error) {
