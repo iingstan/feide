@@ -443,6 +443,62 @@ $('#modulelist').on('click', '.upload_module_btn', function(){
   return false
 })
 
+$('#browser_module_btn').on('click', function(){
+  $.ajax({
+    url: '/api/get_config',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      
+    }
+  })
+  .done(function(config) {
+    config = config.result
+    if (config.module_server_url == undefined || config.module_server_url == '') {
+      modal_alert('还没有配置模块库服务器地址')
+      return false
+    }  
+    $.ajax({
+      url: config.module_server_url + '/api/modules',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        
+      }
+    })
+    .done(function(json) {   
+      var html = $(Handlebars.compile($("#browser_module_template").html())({
+        modules: json,
+        config: config
+      }));
+
+      var newmodalform = new modal_form({
+        title: '浏览模块库',
+        content: html,
+        formid: 'browser_module_form',
+        size: 'big'
+      });
+
+      newmodalform.show(); 
+
+      bindSearchModule()
+      return false    
+    })
+    .fail(function(error) {
+      
+    })    
+  })
+  .fail(function(error) {
+    
+  })
+})
+
+function bindSearchModule() {
+  $('#browser_module_form').on('click', '.panel', function(){
+    window.open($(this).data('url'))
+  })
+}
+
 /***/ }),
 
 /***/ 2:
@@ -511,37 +567,51 @@ module.exports = {
  */
 
 function modal_form(options) {
-    this.options = $.extend({
-        title: '提示',
-        formid: '',
-        content: '',
-        onClose: null
-    }, options);
+  this.options = $.extend({
+    title: '提示',
+    formid: '',
+    content: '',
+    onClose: null,
+    size: 'normal'
+  }, options);
+  switch (this.options.size) {
+    case 'big':
+      this.options.size = 'modal-lg'
+      break;
+    case 'smaill':
+      this.options.size = 'modal-sm'
+      break;
+    default:
+      this.options.size = ''
+      break;
+  }
 }
 
 modal_form.prototype.show = function () {
-    var html = this.html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><form action="" id="' + this.options.formid + '"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default form_cancel_btn"><span class="fui-cross"></span> 取消</button><button type="submit" class="btn btn-primary form_submit_btn"><span class="fui-check"></span> 确定</button></div></form></div></div></div>');
-    $('.modal-body', html).append(this.options.content);
-    $("body").append(html);
-    html.modal('show');
 
-    // html.on('click', '.form_submit_btn', function(){
-    //     html.modal('hide');
-    // });
 
-    html.on('click', '.form_cancel_btn', function(){
-        html.modal('hide');
-    });    
+  var html = this.html = $('<div class="modal fade"><div class="modal-dialog '  + this.options.size +'"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><form action="" id="' + this.options.formid + '"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default form_cancel_btn"><span class="fui-cross"></span> 取消</button><button type="submit" class="btn btn-primary form_submit_btn"><span class="fui-check"></span> 确定</button></div></form></div></div></div>');
+  $('.modal-body', html).append(this.options.content);
+  $("body").append(html);
+  html.modal('show');
 
-    html.on('hidden.bs.modal', function (e) {
-        html.remove();
-        if(this.options.onClose){
-            this.options.onClose();
-        }
-    }.bind(this));
+  // html.on('click', '.form_submit_btn', function(){
+  //     html.modal('hide');
+  // });
+
+  html.on('click', '.form_cancel_btn', function () {
+    html.modal('hide');
+  });
+
+  html.on('hidden.bs.modal', function (e) {
+    html.remove();
+    if (this.options.onClose) {
+      this.options.onClose();
+    }
+  }.bind(this));
 };
 
-modal_form.prototype.close = function(){
+modal_form.prototype.close = function () {
   this.html.modal('hide');
 }
 

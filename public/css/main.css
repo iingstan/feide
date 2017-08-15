@@ -151,3 +151,17 @@ textarea.code{
 .panel-rifun .funicon:hover{
   color: #91CCFF;
 }
+
+.browser_module .module_list{
+  padding-top: 15px;
+}
+
+.browser_module .module_list .panel:hover{
+  transform: translate(-2px,-2px);
+  transition-duration: 0.15s;
+  box-shadow: rgba(0,0,0,0.3) 3px 3px 3px;
+  cursor: pointer;
+}
+.browser_module .module_list .panel .immed_down{
+  
+}

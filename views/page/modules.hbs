@@ -85,6 +85,36 @@
   </div>
 </script>
 
+<script id="browser_module_template" type="text/x-handlebars-template">
+  <div class="browser_module">
+    <div class="module_search">
+      <div class="input-group">
+        <input type="text" class="form-control" id="search_key">
+        <span class="input-group-btn">
+          <a id="search_btn" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-search" title="搜索"></span></a>
+          <a id="clean_search" class="btn btn-warning" href="/modules/"><span class="glyphicon glyphicon-remove" title="清空搜索"></span></a>
+        </span>
+      </div>
+    </div>
+    <div class="module_list row">
+      \{{#each modules}}
+      <div class="col-md-6">
+        <div class="panel panel-primary" data-url="\{{../config.module_server_url}}/modules/info/\{{name}}" data-module="hh">
+          <div class="panel-heading">
+            <h3 class="panel-title">\{{name}}</h3>
+            <div class="panel-rifun">\{{username}}@\{{version}} <span class="glyphicon glyphicon-download-alt immed_down"></span></div>
+          </div>
+          <div class="panel-body">
+            hh2&nbsp;
+          </div>
+        </div>      
+      </div>
+      \{{/each}}
+    </div>
+  </div>
+</script>
+
+
 
 {{#extend "bodybottom"}}
 <script src="/js/page_module.js"></script>

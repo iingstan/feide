@@ -280,3 +280,59 @@ $('#modulelist').on('click', '.upload_module_btn', function(){
   })
   return false
 })
+
+$('#browser_module_btn').on('click', function(){
+  $.ajax({
+    url: '/api/get_config',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      
+    }
+  })
+  .done(function(config) {
+    config = config.result
+    if (config.module_server_url == undefined || config.module_server_url == '') {
+      modal_alert('还没有配置模块库服务器地址')
+      return false
+    }  
+    $.ajax({
+      url: config.module_server_url + '/api/modules',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        
+      }
+    })
+    .done(function(json) {   
+      var html = $(Handlebars.compile($("#browser_module_template").html())({
+        modules: json,
+        config: config
+      }));
+
+      var newmodalform = new modal_form({
+        title: '浏览模块库',
+        content: html,
+        formid: 'browser_module_form',
+        size: 'big'
+      });
+
+      newmodalform.show(); 
+
+      bindSearchModule()
+      return false    
+    })
+    .fail(function(error) {
+      
+    })    
+  })
+  .fail(function(error) {
+    
+  })
+})
+
+function bindSearchModule() {
+  $('#browser_module_form').on('click', '.panel', function(){
+    window.open($(this).data('url'))
+  })
+}
