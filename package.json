@@ -7,11 +7,13 @@
     "webpack": ".\\node_modules\\.bin\\webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["front-end",
+  "keywords": [
+    "front-end",
     "development",
     "tool",
     "server",
-    "http"],
+    "http"
+  ],
   "author": "yijun",
   "license": "MIT",
   "bin": {
@@ -62,6 +64,7 @@
     "typescript": "^2.4.1",
     "uglify-js": "^3.0.23",
     "webpack": "^2.4.1",
-    "webpack-dev-middleware": "^1.10.1"
+    "webpack-dev-middleware": "^1.10.1",
+    "yazl": "^2.4.2"
   }
 }

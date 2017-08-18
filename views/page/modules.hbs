@@ -15,12 +15,12 @@
   <div class="module_list row">
     \{{#each this}}
     <div class="col-md-4">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" data-modulename="\{{this.filename}}">
       <div class="panel-heading">
         <div class="panel-title">\{{this.filename}}</div>
         <div class="panel-rifun"><span class="funicon fui-upload upload_module_btn" data-path="\{{this.path}}" data-toggle="tooltip" data-placement="top" data-original-title="发布模块"></span> <span class="funicon fui-new edit_module_json" data-modulename="\{{this.filename}}" data-toggle="tooltip" data-placement="top" data-original-title="编辑模块信息(package.json)"></span></div>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" title="\{{this.json.description}}">
         \{{this.json.description}}&nbsp;
       </div>
     </div>
@@ -57,19 +57,19 @@
   <h6>\{{module_name}}</h6>
   <div class="form-group">
     <label class="control-label" for="module_description">模块描述(description)</label>
-    <input class="form-control" id="module_description" type="text" value="\{{description}}">
+    <input class="form-control" id="module_description" type="text" value="\{{config.description}}">
   </div>
   <div class="form-group">
     <label class="control-label" for="module_version">版本号(version)，必须使用语义化三段整数式版本号，例如：1.3.14</label>
-    <input class="form-control" id="module_version" type="text" value="\{{version}}">
+    <input class="form-control" id="module_version" type="text" value="\{{config.version}}">
   </div>
   <div class="form-group">
     <label class="control-label" for="module_main">主JS文件(main)</label>
-    <input class="form-control" id="module_main" type="text" value="\{{main}}">
+    <input class="form-control" id="module_main" type="text" value="\{{config.main}}">
   </div>
   <div class="form-group">
     <label class="control-label" for="module_keywords">关键字(keywords)，多个关键字用英文逗号分隔</label>
-    <input class="form-control" id="module_keywords" type="text" value="\{{keywords}}">
+    <input class="form-control" id="module_keywords" type="text" value="\{{config.keywords}}">
   </div>  
 </script>
 
@@ -89,23 +89,23 @@
   <div class="browser_module">
     <div class="module_search">
       <div class="input-group">
-        <input type="text" class="form-control" id="search_key">
+        <input type="text" class="form-control" id="search_key" placeholder="输入模块名搜索">
         <span class="input-group-btn">
-          <a id="search_btn" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-search" title="搜索"></span></a>
+          {{!-- <a id="search_btn" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-search" title="搜索"></span></a> --}}
           <a id="clean_search" class="btn btn-warning" href="/modules/"><span class="glyphicon glyphicon-remove" title="清空搜索"></span></a>
         </span>
       </div>
     </div>
-    <div class="module_list row">
+    <div class="module_list row" id="module_list">
       \{{#each modules}}
       <div class="col-md-6">
-        <div class="panel panel-primary" data-url="\{{../config.module_server_url}}/modules/info/\{{name}}" data-module="hh">
+        <div class="panel panel-primary" data-name="\{{name}}">
           <div class="panel-heading">
             <h3 class="panel-title">\{{name}}</h3>
-            <div class="panel-rifun">\{{username}}@\{{version}} <span class="glyphicon glyphicon-download-alt immed_down"></span></div>
+            <div class="panel-rifun">\{{username}}@\{{version}}</div>
           </div>
-          <div class="panel-body">
-            hh2&nbsp;
+          <div class="panel-body" title="\{{intro}}">
+            \{{intro}}&nbsp;
           </div>
         </div>      
       </div>
@@ -114,7 +114,93 @@
   </div>
 </script>
 
+<script id="browser_modulelist_template" type="text/x-handlebars-template">
+  <div>
+  \{{#each modules}}
+    <div class="col-md-6">
+      <div class="panel panel-primary" data-name="\{{name}}">
+        <div class="panel-heading">
+          <h3 class="panel-title">\{{name}}</h3>
+          <div class="panel-rifun">\{{username}}@\{{version}}</div>
+        </div>
+        <div class="panel-body" title="\{{intro}}">
+          \{{intro}}&nbsp;
+        </div>
+      </div>      
+    </div>
+    \{{/each}}
+  </div>
+</script>
 
+<script id="local_module_info_template" type="text/x-handlebars-template">
+  <div>
+    <dl class="infodl">
+      <div id="module_info2">
+        <dt>版本</dt>
+        <dd>\{{config.version}}</dd>        
+        <dt>作者</dt>
+        <dd>\{{config.author}}</dd>
+        <dt>简介</dt>
+        <dd>\{{config.description}}</dd> 
+        <dt>关键字</dt>
+        <dd>\{{config.keywords}}&nbsp;</dd>
+        <dt>文件列表</dt>
+        <dd>
+          \{{#each files}}
+            <li><a href="/codeview?path=js/modules/\{{../module_name}}/\{{this}}" target="_blank">\{{this}}</a></li>
+          \{{/each}}
+        </dd> 
+      </div> 
+    </dl>
+  </div>
+</script>
+
+<script id="module_info_template" type="text/x-handlebars-template">
+  <div>
+    <dl class="infodl">
+      <dt>版本</dt>
+      <dd>
+        <select name="" id="version_select" class="form-control" style="width:120px;">
+          \{{#each versions}}
+            <option value="\{{this}}">\{{this}}</option>
+          \{{/each}}
+          
+        </select>
+      </dd>
+      <div id="module_info2">
+        <dt>上传人</dt>
+        <dd>\{{baseinfo.username}}</dd>
+        <dt>简介</dt>
+        <dd>\{{packageinfo.description}}</dd> 
+        <dt>关键字</dt>
+        <dd>\{{packageinfo.keywords}}&nbsp;</dd>
+        <dt>文件列表</dt>
+        <dd>
+          \{{#each files}}
+            <li><a href="\{{../module_server_url}}/file/\{{../module_name}}/\{{../packageinfo.version}}/\{{this}}" target="_blank">\{{this}}</a></li>
+          \{{/each}}
+        </dd> 
+      </div> 
+    </dl>
+  </div>
+</script>
+
+<script id="module_info2_template" type="text/x-handlebars-template">
+<div>
+<dt>上传人</dt>
+<dd>\{{baseinfo.username}}</dd>
+<dt>简介</dt>
+<dd>\{{packageinfo.description}}</dd> 
+<dt>关键字</dt>
+<dd>\{{packageinfo.keywords}}&nbsp;</dd>
+<dt>文件列表</dt>
+<dd>
+  \{{#each files}}
+    <li><a href="\{{../module_server_url}}/file/\{{../module_name}}/\{{../packageinfo.version}}/\{{this}}" target="_blank">\{{this}}</a></li>
+  \{{/each}}
+</dd> 
+</div>
+</script>
 
 {{#extend "bodybottom"}}
 <script src="/js/page_module.js"></script>

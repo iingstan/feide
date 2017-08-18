@@ -8,6 +8,7 @@ let page_data = require('../lib/page_data');
 let jsonresult = require('../models/jsonresult');
 const handlebars = require('handlebars');
 let memory_file = require('../lib/memory_file')
+const glob = require('glob');
 
 
 router.get('/', function(req, res, next) {
@@ -253,6 +254,24 @@ router.post('/upload_module', function (req, res, next) {
 });
 
 /**
+ * 下载模块
+ */
+router.post('/download_module', function (req, res, next) {
+  let module_name = req.body.module_name
+  let module_version = req.body.module_version
+
+  let femodule = require('../lib/femodule')
+
+  femodule.downloadModule(module_name, module_version).then(function(){
+    let resultjson = new jsonresult(true, '', null)
+    res.json(resultjson);
+  }).catch(function(error){
+    let resultjson = new jsonresult(false, error.message, null);
+    res.json(resultjson);
+  })
+});
+
+/**
  * 删除页面
  */
 router.post('/delete_page', function (req, res, next) {
@@ -487,9 +506,26 @@ router.get('/module_list', function (req, res, next) {
  */
 router.get('/module_info/:module_name', function (req, res, next) {
   try {
+
+    let back = {}
+
     let module_name = req.params.module_name
     const femodule = require('../lib/femodule')
-    let resultjson = new jsonresult(true, '', femodule.getModulePackageJson(module_name))
+    back.config = femodule.getModulePackageJson(module_name)
+
+    back.files = glob.sync('**/*.*', {
+      cwd: path.join(global.workdir, 'js', 'modules', module_name)
+    }).map(v=>{
+      return v.replace(
+        path.sep,
+        '/'
+      )
+    })
+
+    let resultjson = new jsonresult(true, '', back)
+
+
+
     res.json(resultjson)    
   } catch (error) {
     let resultjson = new jsonresult(false, error.message, null)

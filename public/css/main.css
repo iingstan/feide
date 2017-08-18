@@ -157,11 +157,41 @@ textarea.code{
 }
 
 .browser_module .module_list .panel:hover{
-  transform: translate(-2px,-2px);
-  transition-duration: 0.15s;
+  /* transform: translate(-2px,-2px);
+  transition-duration: 0.15s; */
   box-shadow: rgba(0,0,0,0.3) 3px 3px 3px;
   cursor: pointer;
 }
 .browser_module .module_list .panel .immed_down{
-  
+  color:#FFEB9D;
+}
+.browser_module .module_list .panel .immed_down:hover{
+  transform: scale(1.5);
+  transform-origin: 50% 50%;
+  transition-duration: 0.1s;
+}
+
+.module_list .panel:hover{
+  box-shadow: rgba(0,0,0,0.3) 3px 3px 3px;
+  cursor: pointer;
+}
+
+.module_list .panel-body{
+  overflow: hidden;
+  height: 57px;
+  line-height: 35px;
+  padding-top: 12px;
+  padding-bottom: 18px;
+} 
+
+#download_module_form dt{
+  margin-bottom: 4px;
+}
+
+#download_module_form dd{
+  padding-left: 2em;
+}
+
+.infodl dd{
+  padding-left: 24px;
 }
