@@ -278,6 +278,18 @@ router.get('/get_config', function (req, res, next) {
 });
 
 /**
+ * 获取用户配置文件
+ */
+router.get('/get_user_config', function (req, res, next) {
+  let appdata = require('../lib/appdata')
+  jsonresult.re = true;
+  jsonresult.message = '';
+  jsonresult.result = appdata.get();
+
+  res.json(jsonresult);
+});
+
+/**
  * 新建公共库 上传文件
  */
 router.post('/create_libs_byfile', upload.single('create_libs_uploadfile'), function (req, res, next) {

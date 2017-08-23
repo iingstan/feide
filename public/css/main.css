@@ -195,3 +195,7 @@ textarea.code{
 .infodl dd{
   padding-left: 24px;
 }
+
+.cpager{
+  text-align: center;
+}

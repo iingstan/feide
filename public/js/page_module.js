@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -157,14 +157,73 @@ module.exports = function(options){
 
 /***/ }),
 
-/***/ 18:
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 删除文件提示框
+ */
+
+var modal_confirm = __webpack_require__(1);
+var modal_alert = __webpack_require__(0)
+
+function delete_file(filepath, success, fail) {
+  $.ajax({
+      url: '/api/delete_file',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        filepath: filepath
+      }
+  })
+  .done(function (json) {
+    if (json.re) {
+      if (success) {
+        success();
+      }
+    } else {
+      if (fail) {
+        fail(json.message);
+      }
+    }
+  })
+  .fail(function (error) {
+    if (fail) {
+      fail(error.message);
+    }
+  });
+}
+
+module.exports = {
+  bind: function(btn, callback){
+    $('body').on('click', btn, function(){
+      var filepath = $(this).data('filepath')
+      modal_confirm({
+        content:'确定删除 <strong>' + filepath + '</strong>？',
+        onConfirm: function(){
+          delete_file(filepath, function(){
+            callback();
+          }, function(message){
+            modal_alert(message);
+          });
+        }
+      });
+      return false;
+    })
+  }
+}
+
+/***/ }),
+
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 
 var modal_alert = __webpack_require__(0);
 var modal_form = __webpack_require__(3);
-var modal = __webpack_require__(26)
+var modal = __webpack_require__(6)
 var delete_file_confirm =  __webpack_require__(2);
+var pager = __webpack_require__(28);
 
 $('#header_nav li:eq(0)').addClass('active');
 
@@ -359,7 +418,7 @@ function mody_module(module_name, success, fail) {
 $('#setup_module_btn').click(function(){
 
   $.ajax({
-    url: '/api/get_config',
+    url: '/api/get_user_config',
     type: 'GET',
     dataType: 'json',
     data: {
@@ -381,6 +440,7 @@ $('#setup_module_btn').click(function(){
     $('#setup_module_form').on('submit', function () {
       setup_module_server(function () {
         newmodalform.close()
+        modal_alert('修改成功！')
       }, function (message) {
         modal_alert(message)
       });
@@ -457,12 +517,11 @@ $('#modulelist').on('click', '.panel', function(){
   
 function showLocalModule(module_json) {
   var html = $(Handlebars.compile($("#local_module_info_template").html())(module_json));
-  console.info(html);
+  
   modal({
     title: module_json.module_name + '模块',
     content: html
   });
-
 
 
 }
@@ -492,9 +551,10 @@ $('#modulelist').on('click', '.upload_module_btn', function(){
 })
 
 var module_server_config = null;
+var searchkey = '';
 $('#browser_module_btn').on('click', function(){
   $.ajax({
-    url: '/api/get_config',
+    url: '/api/get_user_config',
     type: 'GET',
     dataType: 'json',
     data: {
@@ -508,41 +568,99 @@ $('#browser_module_btn').on('click', function(){
       return false
     }  
     module_server_config = config
-    $.ajax({
-      url: config.module_server_url + '/api/modules',
-      type: 'GET',
-      dataType: 'json',
-      data: {
-        
-      }
+
+    var html = $(Handlebars.compile($("#browser_module_template").html())());
+
+    var newmodalform = new modal_form({
+      title: '浏览模块库',
+      content: html,
+      formid: 'browser_module_form',
+      size: 'big'
+    });
+
+    newmodalform.show()
+    
+    $('#browser_module_form').submit(function(){
+      newmodalform.close()
+      return false
     })
-    .done(function(json) {   
-      var html = $(Handlebars.compile($("#browser_module_template").html())({
-        modules: json,
-        config: config
-      }));
 
-      var newmodalform = new modal_form({
-        title: '浏览模块库',
-        content: html,
-        formid: 'browser_module_form',
-        size: 'big'
-      });
+    searchkey = ''
+    bindSearchModule()
 
-      newmodalform.show(); 
+    getModulesFromServer(1, '', function(json){
 
-      bindSearchModule()
-      return false    
-    })
-    .fail(function(error) {
-      
-    })    
+    }, function(message){
+      modal_alert(message)
+    })   
   })
   .fail(function(error) {
     
   })
   return false
 })
+
+function showModulesFromServer(index) {
+  
+}
+
+/**
+ * 从模块服务器获取模块数据
+ * 
+ * @param {int} index 页号
+ * @param {string} search 搜索字符串
+ * @param {any} succ 成功回调
+ * @param {any} fail 失败回调
+ */
+function getModulesFromServer(index, search, succ, fail) {
+  if(index == undefined){
+    index = 1
+  }
+  
+  var pagesize = 6
+  $.ajax({
+    url: module_server_config.module_server_url + '/api/modules',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      pageindex: index,
+      pagesize: pagesize,
+      search: search
+    }
+  })
+  .done(function(json) {
+    if(!json.re){
+      fail(json.message)
+      return false
+    }
+    var html = $(Handlebars.compile($("#browser_module_list_template").html())(json.result));
+
+    $('#module_list').html(html)
+
+    if(json.result.count <= pagesize){
+      $('#module_list_pager').hide()
+      return false
+    }
+    $('#module_list_pager').show()
+    var newpager = new pager({
+      element_id: 'module_list_pager',
+      count: json.result.count,
+      pagesize: pagesize,
+      pageindex: index
+    })
+    newpager.show()
+
+    if(json.re){
+      succ(json.result)
+    } 
+    else{
+      fail(json.message)
+    }    
+  })
+  .fail(function(error) {
+    fail(json.message)
+  })
+}
 
 function bindSearchModule() {
   $('#browser_module_form').on('click', '.panel', function(){
@@ -597,7 +715,6 @@ function bindSearchModule() {
 
   $('#search_key').on('input', _.debounce(function(){
     let key = $.trim($(this).val())
-    //console.info(key);
     showSearch(key)
     return false
   }, 250))
@@ -608,13 +725,26 @@ function bindSearchModule() {
     return false
   })
   
-  $('#module_list').on('click', '.immed_down', function(){
+  //绑定分页
+  $('#module_list_pager').on('click', 'a', function(){
+    var pageindex = $(this).data('page')
+    getModulesFromServer(pageindex, searchkey, function(json){
 
-    return false
+    }, function(message){
+      modal_alert(message)
+    })  
   })
+  
 }
 
 function showSearch(key) {
+  searchkey = key
+  getModulesFromServer(1, key, function(){
+    
+  }, function(message){
+    modal_alert(message)
+  })
+  return false;
   $.ajax({
     url: module_server_config.module_server_url + '/api/modules',
     type: 'GET',
@@ -693,104 +823,87 @@ function downloadModule(module_name, module_version, succ, fail) {
 
 /***/ }),
 
-/***/ 2:
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * 删除文件提示框
- */
-
-var modal_confirm = __webpack_require__(1);
-var modal_alert = __webpack_require__(0)
-
-function delete_file(filepath, success, fail) {
-  $.ajax({
-      url: '/api/delete_file',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        filepath: filepath
-      }
-  })
-  .done(function (json) {
-    if (json.re) {
-      if (success) {
-        success();
-      }
-    } else {
-      if (fail) {
-        fail(json.message);
-      }
-    }
-  })
-  .fail(function (error) {
-    if (fail) {
-      fail(error.message);
-    }
-  });
-}
-
-module.exports = {
-  bind: function(btn, callback){
-    $('body').on('click', btn, function(){
-      var filepath = $(this).data('filepath')
-      modal_confirm({
-        content:'确定删除 <strong>' + filepath + '</strong>？',
-        onConfirm: function(){
-          delete_file(filepath, function(){
-            callback();
-          }, function(message){
-            modal_alert(message);
-          });
-        }
-      });
-      return false;
-    })
-  }
-}
-
-/***/ }),
-
-/***/ 26:
+/***/ 28:
 /***/ (function(module, exports) {
 
 /**
- * 模态框
+ * 分页
  */
 
 
-function modal_alert(options) {
-    this.options = $.extend({
-        title: '提示',
-        content: '',
-        onClose: null
-    }, options);
-}
+var pager = (function () {
+  function pager(options) {
+      var defaultoptions = {
+          element_id: null,
+          count: 500,
+          pagesize: 20,
+          pageindex: 1
+      }
+      this.options = $.extend(defaultoptions, options);
+  }
 
-modal_alert.prototype.show = function () {
-    var html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><div class="modal-body"><p>' + this.options.content + '</p></div><div class="modal-footer"><button type="button" class="btn btn-primary">确定</button></div></div></div></div>');
+  pager.prototype.show = function () {
+      if (this.options.count == 0) {
+          $('#' + this.options.element_id).html('');
+          return false;
+      }
+      var count = Math.ceil(this.options.count / this.options.pagesize);
+      var html = ['<ul class="pagination">'];
+      var pageindex = this.options.pageindex;
 
-    $('.modal-body p', html).html(this.options.content);
+      // 上一页页码
+      var prev_num = 1;
+      if(pageindex > 1){
+          prev_num = pageindex - 1;
+      }
+      // 下一页页码
+      var next_num = count;
+      if(pageindex < count){
+          next_num = pageindex + 1;
+      }
 
-    $("body").append(html);
-    html.modal('show');
+      html.push('<li class="previous"><a href="javascript:;" data-page="1" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></a></li><li><a href="javascript:;" class="btn btn-default" data-page="' + prev_num + '"><span class="fui-arrow-left"></span></a></li>');
 
-    html.on('click', '.btn-primary', function(){
-        html.modal('hide');
-    });
+      if (pageindex < 4) {
+          //前五个
+          for (var i = 1; i <= count; i++) {
+              if(i > 5){
+                  break;
+              }
+              html.push('<li');
+              if (i == pageindex) {
+                  html.push(' class="active"');
+              }
+              html.push('><a href="javascript:;" data-page="' + i + '">' + i + '</a></li>');
+          };
+      }
+      else if(pageindex > count - 3){
+          for (var i = (count - 4 > 0) ? count - 4 : 1; i <= count; i++) {
+            html.push('<li');
+            if (i == pageindex) {
+                html.push(' class="active"');
+            }
+            html.push('><a href="javascript:;" data-page="' + i + '">' + i + '</a></li>');
+          };
+      }
+      else{
+          for (var i = pageindex -2; i <= pageindex + 2; i++) {
+              html.push('<li');
+              if (i == pageindex) {
+                  html.push(' class="active"');
+              };
+              html.push('><a href="javascript:;" data-page="' + i + '">' + i + '</a></li>');
+          };
+      }
 
-    html.on('hidden.bs.modal', function (e) {
-        html.remove();
-        if(this.options.onClose){
-            this.options.onClose();
-        }
-    }.bind(this));
-};
+      html.push('<li><a href="javascript:;" class="btn btn-default" data-page="' + next_num + '"><span class="fui-arrow-right"></span></a></li><li class="next"><a href="javascript:;" class="btn btn-default" data-page="' + count + '"><span class="glyphicon glyphicon-fast-forward"></span></a></ul></li>');
 
-module.exports = function(options){
-    var new_modal_alert = new modal_alert(options);
-    new_modal_alert.show();
-};
+      $('#' + this.options.element_id).html(html.join(''));
+  };
+  return pager;
+})();
+
+module.exports = pager;
 
 /***/ }),
 
@@ -852,6 +965,49 @@ modal_form.prototype.close = function () {
 
 
 module.exports = modal_form
+
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, exports) {
+
+/**
+ * 模态框
+ */
+
+
+function modal_alert(options) {
+    this.options = $.extend({
+        title: '提示',
+        content: '',
+        onClose: null
+    }, options);
+}
+
+modal_alert.prototype.show = function () {
+    var html = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div><div class="modal-body"><p>' + this.options.content + '</p></div><div class="modal-footer"><button type="button" class="btn btn-primary">确定</button></div></div></div></div>');
+
+    $('.modal-body p', html).html(this.options.content);
+
+    $("body").append(html);
+    html.modal('show');
+
+    html.on('click', '.btn-primary', function(){
+        html.modal('hide');
+    });
+
+    html.on('hidden.bs.modal', function (e) {
+        html.remove();
+        if(this.options.onClose){
+            this.options.onClose();
+        }
+    }.bind(this));
+};
+
+module.exports = function(options){
+    var new_modal_alert = new modal_alert(options);
+    new_modal_alert.show();
+};
 
 /***/ })
 

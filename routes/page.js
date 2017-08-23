@@ -221,20 +221,19 @@ router.post('/mody_module', function (req, res, next) {
  * 模块库设置
  */
 router.post('/setup_module_server', function (req, res, next) {
-  let module_server_info = {
-    module_server_url: req.body.module_server_url,
-    module_author: req.body.module_author
+  let module_server_url = req.body.module_server_url
+  let module_author = req.body.module_author
+
+  let module_server = require('../lib/module_server')
+
+  try {
+    module_server.save(module_server_url, module_author)
+    let resultjson = new jsonresult(true, '', null)
+    res.json(resultjson)    
+  } catch (error) {
+    let resultjson = new jsonresult(false, error.message, null)
+    res.json(resultjson)
   }
-
-  let femodule = require('../lib/femodule')
-
-  femodule.setupServer(module_server_info).then(function(){
-    let resultjson = new jsonresult(true, '', null);
-    res.json(resultjson);
-  }).catch(function(error){
-    let resultjson = new jsonresult(false, error.message, null);
-    res.json(resultjson);
-  })
 });
 
 /**

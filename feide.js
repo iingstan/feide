@@ -12,7 +12,7 @@ if (argv.v) {
   return false;
 }
 
-
+//没有找到配置文件，初始化项目
 let files = require('./lib/files');
 let manage_server = require('./lib/manage_server');
 if(!files.exists('./feide.config.json')){ 
@@ -52,10 +52,14 @@ file_watch.watch_webpackjs.start()
 //   fewebpack.restart()
 // })
 
-//初始化项目
+//打开管理网站
 manage_server(global.config.manage_server_port).then(()=>{
   let opn = require('opn');
   opn('http://localhost:' + global.config.manage_server_port + '/', {
     app: 'chrome'
   });
 })
+
+//设置模块服务器地址到用户数据
+const module_server = require('./lib/module_server')
+module_server.pathInit()

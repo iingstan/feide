@@ -3,6 +3,7 @@ var modal_alert = require('./modules/modal_alert/modal_alert');
 var modal_form = require('./modules/modal/modal_form');
 var modal = require('./modules/modal/modal')
 var delete_file_confirm =  require('./modules/modal_confirm/delete_file_confirm');
+var pager = require('./modules/pager');
 
 $('#header_nav li:eq(0)').addClass('active');
 
@@ -197,7 +198,7 @@ function mody_module(module_name, success, fail) {
 $('#setup_module_btn').click(function(){
 
   $.ajax({
-    url: '/api/get_config',
+    url: '/api/get_user_config',
     type: 'GET',
     dataType: 'json',
     data: {
@@ -219,6 +220,7 @@ $('#setup_module_btn').click(function(){
     $('#setup_module_form').on('submit', function () {
       setup_module_server(function () {
         newmodalform.close()
+        modal_alert('修改成功！')
       }, function (message) {
         modal_alert(message)
       });
@@ -295,12 +297,11 @@ $('#modulelist').on('click', '.panel', function(){
   
 function showLocalModule(module_json) {
   var html = $(Handlebars.compile($("#local_module_info_template").html())(module_json));
-  console.info(html);
+  
   modal({
     title: module_json.module_name + '模块',
     content: html
   });
-
 
 
 }
@@ -330,9 +331,10 @@ $('#modulelist').on('click', '.upload_module_btn', function(){
 })
 
 var module_server_config = null;
+var searchkey = '';
 $('#browser_module_btn').on('click', function(){
   $.ajax({
-    url: '/api/get_config',
+    url: '/api/get_user_config',
     type: 'GET',
     dataType: 'json',
     data: {
@@ -346,41 +348,99 @@ $('#browser_module_btn').on('click', function(){
       return false
     }  
     module_server_config = config
-    $.ajax({
-      url: config.module_server_url + '/api/modules',
-      type: 'GET',
-      dataType: 'json',
-      data: {
-        
-      }
+
+    var html = $(Handlebars.compile($("#browser_module_template").html())());
+
+    var newmodalform = new modal_form({
+      title: '浏览模块库',
+      content: html,
+      formid: 'browser_module_form',
+      size: 'big'
+    });
+
+    newmodalform.show()
+    
+    $('#browser_module_form').submit(function(){
+      newmodalform.close()
+      return false
     })
-    .done(function(json) {   
-      var html = $(Handlebars.compile($("#browser_module_template").html())({
-        modules: json,
-        config: config
-      }));
 
-      var newmodalform = new modal_form({
-        title: '浏览模块库',
-        content: html,
-        formid: 'browser_module_form',
-        size: 'big'
-      });
+    searchkey = ''
+    bindSearchModule()
 
-      newmodalform.show(); 
+    getModulesFromServer(1, '', function(json){
 
-      bindSearchModule()
-      return false    
-    })
-    .fail(function(error) {
-      
-    })    
+    }, function(message){
+      modal_alert(message)
+    })   
   })
   .fail(function(error) {
     
   })
   return false
 })
+
+function showModulesFromServer(index) {
+  
+}
+
+/**
+ * 从模块服务器获取模块数据
+ * 
+ * @param {int} index 页号
+ * @param {string} search 搜索字符串
+ * @param {any} succ 成功回调
+ * @param {any} fail 失败回调
+ */
+function getModulesFromServer(index, search, succ, fail) {
+  if(index == undefined){
+    index = 1
+  }
+  
+  var pagesize = 6
+  $.ajax({
+    url: module_server_config.module_server_url + '/api/modules',
+    type: 'GET',
+    dataType: 'json',
+    data: {
+      pageindex: index,
+      pagesize: pagesize,
+      search: search
+    }
+  })
+  .done(function(json) {
+    if(!json.re){
+      fail(json.message)
+      return false
+    }
+    var html = $(Handlebars.compile($("#browser_module_list_template").html())(json.result));
+
+    $('#module_list').html(html)
+
+    if(json.result.count <= pagesize){
+      $('#module_list_pager').hide()
+      return false
+    }
+    $('#module_list_pager').show()
+    var newpager = new pager({
+      element_id: 'module_list_pager',
+      count: json.result.count,
+      pagesize: pagesize,
+      pageindex: index
+    })
+    newpager.show()
+
+    if(json.re){
+      succ(json.result)
+    } 
+    else{
+      fail(json.message)
+    }    
+  })
+  .fail(function(error) {
+    fail(json.message)
+  })
+}
 
 function bindSearchModule() {
   $('#browser_module_form').on('click', '.panel', function(){
@@ -435,7 +495,6 @@ function bindSearchModule() {
 
   $('#search_key').on('input', _.debounce(function(){
     let key = $.trim($(this).val())
-    //console.info(key);
     showSearch(key)
     return false
   }, 250))
@@ -446,13 +505,26 @@ function bindSearchModule() {
     return false
   })
   
-  $('#module_list').on('click', '.immed_down', function(){
+  //绑定分页
+  $('#module_list_pager').on('click', 'a', function(){
+    var pageindex = $(this).data('page')
+    getModulesFromServer(pageindex, searchkey, function(json){
 
-    return false
+    }, function(message){
+      modal_alert(message)
+    })  
   })
+  
 }
 
 function showSearch(key) {
+  searchkey = key
+  getModulesFromServer(1, key, function(){
+    
+  }, function(message){
+    modal_alert(message)
+  })
+  return false;
   $.ajax({
     url: module_server_config.module_server_url + '/api/modules',
     type: 'GET',

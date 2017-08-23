@@ -10,11 +10,15 @@
 </p>
 
 <p>
-  <pre><code class="{{highlight_extname}}">{{filesource}}</code></pre>  
+  <pre><code id="preview" class="{{highlight_extname}}">{{filesource}}</code></pre> 
 </p>
 
 
 {{#extend "bodybottom"}}
 <script src="/js/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script src="/js/markdown.min.js"></script>
+<script>
+  var highlight_extname = "{{highlight_extname}}"
+</script>
+<script src="/js/codeview.js"></script>
 {{/extend}}

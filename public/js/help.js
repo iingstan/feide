@@ -63,10 +63,22 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+
+
+let tips = __webpack_require__(4)
+tips($('#tips'))
+
+$('#header_nav li:eq(3)').addClass('active'); 
+
+/***/ }),
 
 /***/ 4:
 /***/ (function(module, exports) {
@@ -109,18 +121,6 @@ tips_html.on('click', '.pre_tips', function(){
 module.exports = function(container){
   container.html(tips_html)
 }
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-
-
-let tips = __webpack_require__(4)
-tips($('#tips'))
-
-$('#header_nav li:eq(3)').addClass('active'); 
 
 /***/ })
 

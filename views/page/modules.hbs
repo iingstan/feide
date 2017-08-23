@@ -45,7 +45,7 @@
       <option value="none">无</option>
       <option value="function">Function</option>
       <option value="object">Object</option>
-      <option value="lclass">类Class(function prototype)</option>
+      <option value="lclass">Function prototype</option>
     </select>
   </div>
   <div class="form-group">
@@ -74,7 +74,7 @@
 </script>
 
 <script id="setup_module_template" type="text/x-handlebars-template">
-  <h6>\{{module_name}}</h6>
+  <div>注意：以下设置为用户设置，不是项目设置，设置之后将在此电脑用户的所有项目中生效</div>
   <div class="form-group">
     <label class="control-label" for="module_server_url">模块库服务器地址</label>
     <input class="form-control" id="module_server_url" type="url" value="\{{module_server_url}}">
@@ -91,27 +91,29 @@
       <div class="input-group">
         <input type="text" class="form-control" id="search_key" placeholder="输入模块名搜索">
         <span class="input-group-btn">
-          {{!-- <a id="search_btn" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-search" title="搜索"></span></a> --}}
           <a id="clean_search" class="btn btn-warning" href="/modules/"><span class="glyphicon glyphicon-remove" title="清空搜索"></span></a>
         </span>
       </div>
     </div>
-    <div class="module_list row" id="module_list">
-      \{{#each modules}}
-      <div class="col-md-6">
-        <div class="panel panel-primary" data-name="\{{name}}">
-          <div class="panel-heading">
-            <h3 class="panel-title">\{{name}}</h3>
-            <div class="panel-rifun">\{{username}}@\{{version}}</div>
-          </div>
-          <div class="panel-body" title="\{{intro}}">
-            \{{intro}}&nbsp;
-          </div>
-        </div>      
+    <div class="module_list row" id="module_list"></div>
+    <div class="cpager" id="module_list_pager"></div>
+  </div>
+</script>
+
+<script id="browser_module_list_template" type="text/x-handlebars-template">
+  \{{#each modules}}
+  <div class="col-md-6">
+    <div class="panel panel-primary" data-name="\{{name}}">
+      <div class="panel-heading">
+        <h3 class="panel-title">\{{name}}</h3>
+        <div class="panel-rifun">\{{username}}@\{{version}}</div>
       </div>
-      \{{/each}}
+      <div class="panel-body" title="\{{intro}}">
+        \{{intro}}&nbsp;
+      </div>
     </div>
   </div>
+  \{{/each}}
 </script>
 
 <script id="browser_modulelist_template" type="text/x-handlebars-template">
