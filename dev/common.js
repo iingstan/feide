@@ -48,7 +48,7 @@ function fillzero(num){
 }
 
 Handlebars.registerHelper('showTime', function (date) {
-  let thisdate = new Date(date);
+  var thisdate = new Date(date);
   return thisdate.getFullYear() + '/' + (thisdate.getMonth() + 1) + '/' + thisdate.getDate() + ' ' + thisdate.getHours() + ':' + fillzero(thisdate.getMinutes());
   //return new Date(date).toLocaleString();
 });
