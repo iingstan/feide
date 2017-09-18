@@ -1,1 +1,16 @@
 <h3>JS压缩设置</h3>
+
+<form action="" id="mody_config_form">
+  <div class="form-group">
+    <label class="control-label"><input type="checkbox" class="bigcheck" name="" id="js_compress_console"> 压缩时去除Console语句 </label>
+  </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">提交</button> &nbsp; 
+        <button type="reset" class="btn btn-default">重置</button>
+    </div>
+</form>
+
+{{#extend "bodybottom"}}
+<script src="/js/js_compress.js"></script>
+{{/extend}}

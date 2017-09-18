@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/js";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -112,7 +112,7 @@ module.exports = function(options){
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports, __webpack_require__) {
 
 var modal_confirm = __webpack_require__(1);
@@ -165,7 +165,7 @@ function fillzero(num){
 }
 
 Handlebars.registerHelper('showTime', function (date) {
-  let thisdate = new Date(date);
+  var thisdate = new Date(date);
   return thisdate.getFullYear() + '/' + (thisdate.getMonth() + 1) + '/' + thisdate.getDate() + ' ' + thisdate.getHours() + ':' + fillzero(thisdate.getMinutes());
   //return new Date(date).toLocaleString();
 });

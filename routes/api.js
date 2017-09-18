@@ -47,6 +47,10 @@ router.post('/mody_config', function (req, res, next) {
         fewebpack.restart()
       }      
     }
+    if(req.body.js_compress_console != null){
+      mody_config.js_compress = {}
+      mody_config.js_compress.console = (req.body.js_compress_console == 'true')?true:false    
+    }
 
     var newconfig = _.extend(global.config, mody_config);
 
